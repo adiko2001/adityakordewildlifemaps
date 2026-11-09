@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>From Spatial Hazard Models to Concrete Mitigation Plans | Aditya Korde</title>
+  <meta name="description" content="Converting conflict polygons, slope thresholds, and fire perimeters into actionable, budget-conscious industrial access solutions.">
+
+  <!-- Typography: Fraunces, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --field-khaki: #C9BFA0;
+      --card-surface: #F2EEE4;
+      --stripe-black: #14100D;
+      --tiger-orange: #E2591D;
+      --ash: #59544C;
+      --ash-dark: #3A362F;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--field-khaki);
+      color: var(--stripe-black);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* Header & Navigation */
+    header {
+      background-color: var(--stripe-black);
+      color: #FFFFFF;
+      padding: 1.25rem 2rem;
+      border-bottom: 2px solid var(--tiger-orange);
+      position: relative;
+      z-index: 100;
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      text-decoration: none;
+    }
+
+    .brand-name:hover {
+      color: var(--tiger-orange);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #F2EEE4;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-btn {
+      color: #F2EEE4;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .dropdown-btn:hover,
+    .dropdown:hover .dropdown-btn {
+      color: var(--tiger-orange);
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      padding-top: 0.5rem;
+      min-width: 190px;
+      z-index: 1000;
+    }
+
+    .dropdown-inner {
+      background-color: var(--stripe-black);
+      border: 1px solid var(--ash);
+      border-top: 2px solid var(--tiger-orange);
+      border-radius: 4px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      padding: 0.5rem 0;
+    }
+
+    .dropdown-inner a {
+      color: #F2EEE4;
+      padding: 0.65rem 1.25rem;
+      display: block;
+      font-size: 0.88rem;
+      text-decoration: none;
+      font-family: var(--font-mono);
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .dropdown-inner a:hover {
+      background-color: var(--tiger-orange);
+      color: #FFFFFF;
+    }
+
+    .dropdown:hover .dropdown-menu,
+    .dropdown.active .dropdown-menu {
+      display: block;
+    }
+
+    /* Main Container */
+    .note-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 4.5rem 2rem 6rem 2rem;
+    }
+
+    .note-card {
+      background-color: var(--card-surface);
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 3.5rem 3rem;
+    }
+
+    .note-tag {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--tiger-orange);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+      display: block;
+    }
+
+    .note-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.8vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--stripe-black);
+      margin-bottom: 1.25rem;
+    }
+
+    .note-subtitle {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--ash-dark);
+      line-height: 1.5;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Single Map Figure Layout */
+    .note-figure {
+      margin: 2.5rem 0 2rem 0;
+    }
+
+    .note-figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--ash);
+      border-radius: 3px;
+      background-color: #FFFFFF;
+    }
+
+    .note-figure figcaption {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ash-dark);
+      line-height: 1.5;
+      margin-top: 0.85rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(89, 84, 76, 0.3);
+    }
+
+    /* Content Headings & Paragraphs */
+    .note-section-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--stripe-black);
+      margin-top: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .note-card p {
+      font-size: 1rem;
+      color: var(--ash-dark);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--stripe-black);
+      color: var(--field-khaki);
+      padding: 4rem 2rem 2.5rem 2rem;
+      border-top: 2px solid var(--ash);
+      font-size: 0.92rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-columns {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .footer-brand h4 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: #FFFFFF;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-brand p {
+      color: var(--field-khaki);
+      max-width: 380px;
+      line-height: 1.6;
+    }
+
+    .footer-heading {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--tiger-orange);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .footer-list a {
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-list a:hover {
+      color: var(--tiger-orange);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(89, 84, 76, 0.4);
+      padding-top: 1.75rem;
+      font-size: 0.82rem;
+      color: var(--field-khaki);
+    }
+
+    @media (max-width: 768px) {
+      .note-card {
+        padding: 2.25rem 1.5rem;
+      }
+      .footer-columns {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <nav>
+      <a href="index.html" class="brand-name">Aditya Korde</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#selected-spatial-work">Projects</a></li>
+        <li><a href="Field_Notes.html">Field Notes</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li class="dropdown" id="contactDropdownContainer">
+          <button class="dropdown-btn" type="button" aria-expanded="false" onclick="toggleContactDropdown(event)">
+            Contact <span style="font-size: 0.7rem;">▾</span>
+          </button>
+          <div class="dropdown-menu">
+            <div class="dropdown-inner">
+              <a href="mailto:adityako2001@gmail.com">Email</a>
+              <a href="https://linkedin.com/in/aditya-korde-6426aa235/" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://instagram.com/aditya_k2001" target="_blank" rel="noopener">Instagram</a>
+              <a href="Assets/Adi%20CV%20Sep%202026%20(4)%20(2).pdf" download>Download CV</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Note -->
+  <main class="note-container">
+    <article class="note-card">
+
+      <!-- Bold Tag at Top -->
+      <span class="note-tag">Application</span>
+
+      <!-- Title & Subtitle -->
+      <h1 class="note-title">From Spatial Hazard Models to Concrete Mitigation Plans</h1>
+      <p class="note-subtitle">Converting conflict polygons, slope thresholds, and fire perimeters into actionable, budget-conscious industrial access solutions.</p>
+
+      <!-- Center Figure -->
+      <figure class="note-figure">
+        <img src="images/Priority%20vs%20Active%20RR.png" alt="Prioritized road deactivation targets on terrain">
+        <figcaption>
+          Figure 1: Prioritized road deactivation targets (558.8 km) in southeastern BC, isolating inactive forestry tracks on slopes over 15° where digging up the roadbed stops erosion and cuts off vehicle access to feeding areas.
+        </figcaption>
+      </figure>
+
+      <!-- Section 1 -->
+      <h2 class="note-section-title">1. Strategic Access Decommissioning (The 558.8 km Priority Target):</h2>
+      <p>Instead of leaving old logging tracks open to the public, the model isolated inactive and abandoned roads on slopes steeper than 15° while leaving active timber hauling routes alone.</p>
+      <p>The restoration action: Bringing in heavy machinery to dig up the hard-packed dirt roadbeds and block vehicle access. Ripping up the compacted soil lets water soak naturally into the mountainside (stopping erosion and mudslides) while permanently cutting off pickup trucks, poachers, and ATVs from driving straight into grizzly feeding areas.</p>
+
+      <!-- Section 2 -->
+      <h2 class="note-section-title">2. Mitigating Risk in Narrow Movement Corridors</h2>
+      <p>Wildfires force wide-ranging carnivores out of burned woods and push them into the surviving forest left behind. By calculating a perimeter-to-area constriction metric across Alberta's wildfire perimeters, the model mapped long, thin strips of forest where animals have very little room to travel. When these narrow routes cross active highways and resource roads, displaced bears face heavy vehicle traffic and higher collision risks. Land managers can use these mapped collision zones to target practical fixes on the ground—such as seasonal driver warning signs, lower speed limits, and specific spots to build wildlife crossing overpasses or underpasses.</p>
+
+      <!-- Section 3 -->
+      <h2 class="note-section-title">3. Managing Road Access Instead of Banning Forestry</h2>
+      <p>Over 90% of prime grizzly bear feeding habitat in southeastern British Columbia sits on working Crown land outside protected parks. Banning commercial logging across these valleys is completely unrealistic because forestry drives the local economy, and early-seral clearings naturally produce the berry patches bears rely on. The practical solution is managing human access instead of fighting the harvest. Timber companies can harvest forest cutblocks and haul logs along active roads, but once an operating area is finished, the access routes should be permanently shut down. Digging up the compacted dirt on inactive roads keeps active hauling routes running, supports local timber jobs, and ensures feeding clearings do not remain open for vehicles, hunters, and poachers.</p>
+
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-columns">
+        <div class="footer-brand">
+          <h4>Aditya Korde</h4>
+          <p>Early-career wildlife conservationist using camera traps and satellite mapping to understand how wild animals live, move and survive.</p>
+        </div>
+
+        <div>
+          <div class="footer-heading">NAVIGATION</div>
+          <ul class="footer-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#selected-spatial-work">Projects</a></li>
+            <li><a href="Field_Notes.html">Field Notes</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="mailto:adityako2001@gmail.com">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-heading">CONTACT</div>
+          <ul class="footer-list">
+            <li><a href="mailto:adityako2001@gmail.com">adityako2001@gmail.com</a></li>
+            <li><a href="https://linkedin.com/in/aditya-korde-6426aa235/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://instagram.com/aditya_k2001" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="Assets/Adi%20CV%20Sep%202026%20(4)%20(2).pdf" download>Download CV (PDF)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        adityakordewildlifemaps.com
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleContactDropdown(event) {
+      event.stopPropagation();
+      var container = document.getElementById('contactDropdownContainer');
+      container.classList.toggle('active');
+    }
+
+    document.addEventListener('click', function(event) {
+      var container = document.getElementById('contactDropdownContainer');
+      if (container && !container.contains(event.target)) {
+        container.classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>

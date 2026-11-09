@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Primary SEO Metadata -->
+  <title>Aditya Korde | Wildlife Conservationist · Applied GIS & Field Monitoring</title>
+  <meta name="description" content="Portfolio of Aditya Korde. Applied spatial ecology, backcountry camera-trap arrays, and grizzly bear habitat modeling across British Columbia and Alberta using ArcGIS Pro and QGIS.">
+  <meta name="keywords" content="Aditya Korde, wildlife GIS, grizzly bear habitat modeling, ArcGIS Pro, QGIS, camera traps, road deactivation, British Columbia spatial ecology, Alberta wildfire corridors, WWF, WCS">
+  <link rel="canonical" href="https://adityakordewildlifemaps.com/">
+
+  <!-- Open Graph / Social Sharing (LinkedIn, Slack, Meta) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://adityakordewildlifemaps.com/">
+  <meta property="og:title" content="Aditya Korde | Applied GIS & Wildlife Conservation">
+  <meta property="og:description" content="Backcountry field monitoring and provincial spatial models across British Columbia and Alberta.">
+  <meta property="og:image" content="https://adityakordewildlifemaps.com/images/hero-fieldwork.png">
+
+  <!-- JSON-LD Entity Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Aditya Korde",
+    "url": "https://adityakordewildlifemaps.com",
+    "jobTitle": "Wildlife Conservationist & Spatial Analyst",
+    "description": "Early-career wildlife conservationist integrating camera-trap arrays with provincial spatial models in ArcGIS Pro and QGIS to evaluate large carnivore habitat security.",
+    "alumniOf": [
+      {
+        "@type": "CollegeOrUniversity",
+        "name": "Anglia Ruskin University (ARU Cambridge)",
+        "sameAs": "https://www.aru.ac.uk"
+      },
+      {
+        "@type": "CollegeOrUniversity",
+        "name": "Liverpool John Moores University",
+        "sameAs": "https://www.ljmu.ac.uk"
+      }
+    ],
+    "knowsAbout": [
+      "Geographic Information Systems (GIS)",
+      "ArcGIS Pro",
+      "QGIS",
+      "Camera Trapping Protocols",
+      "Spatial Ecology",
+      "Grizzly Bear Habitat Modeling",
+      "Forestry Road Deactivation",
+      "Wildfire Disturbance Corridors",
+      "BC Albers (EPSG:3005)",
+      "NAD 1983 10TM"
+    ],
+    "sameAs": [
+      "https://www.linkedin.com/in/aditya-korde-6426aa235/",
+      "https://www.instagram.com/aditya_k2001"
+    ]
+  }
+  </script>
+
+  <!-- Typography: Fraunces, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --field-khaki: #C9BFA0;
+      --card-surface: #F2EEE4;
+      --stripe-black: #14100D;
+      --tiger-orange: #E2591D;
+      --ash: #59544C;
+      --ash-dark: #3A362F;
+      --spruce: #1F3326;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--field-khaki);
+      color: var(--stripe-black);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* Header & Navigation */
+    header {
+      background-color: var(--stripe-black);
+      color: #FFFFFF;
+      padding: 1.25rem 2rem;
+      border-bottom: 2px solid var(--tiger-orange);
+      position: relative;
+      z-index: 100;
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .brand-name:hover {
+      color: var(--tiger-orange);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #F2EEE4;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--tiger-orange);
+    }
+
+
+/* Mobile Hamburger Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+      padding: 0.5rem;
+      z-index: 200;
+    }
+
+    .mobile-menu-btn .bar {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background-color: var(--field-khaki);
+      transition: all 0.2s ease;
+    }
+
+    /* Dropdown Component */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-btn {
+      color: #F2EEE4;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.15s ease;
+    }
+
+    .dropdown-btn:hover,
+    .dropdown:hover .dropdown-btn {
+      color: var(--tiger-orange);
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      padding-top: 0.5rem;
+      min-width: 190px;
+      z-index: 1000;
+    }
+
+    .dropdown-inner {
+      background-color: var(--stripe-black);
+      border: 1px solid var(--ash);
+      border-top: 2px solid var(--tiger-orange);
+      border-radius: 4px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      padding: 0.5rem 0;
+    }
+
+    .dropdown-inner a {
+      color: #F2EEE4;
+      padding: 0.65rem 1.25rem;
+      display: block;
+      font-size: 0.88rem;
+      text-decoration: none;
+      font-family: var(--font-mono);
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .dropdown-inner a:hover {
+      background-color: var(--tiger-orange);
+      color: #FFFFFF;
+    }
+
+    .dropdown:hover .dropdown-menu,
+    .dropdown.active .dropdown-menu {
+      display: block;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 2rem 5rem 2rem;
+      border-bottom: 2px solid var(--ash);
+      background-color: var(--stripe-black);
+      background-image: linear-gradient(rgba(20, 16, 13, 0.25), rgba(20, 16, 13, 0.65)), url('/images/hero-fieldwork.png');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    .hero-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-content h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 600;
+      line-height: 1.2;
+      max-width: 920px;
+      margin-bottom: 2.25rem;
+      color: #FFFFFF;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background-color: var(--tiger-orange);
+      color: #FFFFFF;
+      padding: 0.85rem 1.75rem;
+      border-radius: 3px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      transition: background-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #C74812;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      background-color: rgba(20, 16, 13, 0.75);
+      color: #FFFFFF;
+      padding: 0.85rem 1.75rem;
+      border: 1px solid var(--ash);
+      border-radius: 3px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--tiger-orange);
+      background-color: var(--stripe-black);
+    }
+
+    /* Core Competencies */
+    .competencies-section {
+      background-color: var(--card-surface);
+      border-bottom: 2px solid var(--ash);
+      padding: 4.5rem 2rem 5rem 2rem;
+    }
+
+    .competencies-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--tiger-orange);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--stripe-black);
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: var(--ash-dark);
+      margin-bottom: 2.75rem;
+      max-width: 720px;
+    }
+
+    .competencies-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .competency-card {
+      background-color: #FFFFFF;
+      border: 1px solid var(--ash);
+      border-top: 3px solid var(--tiger-orange);
+      border-radius: 3px;
+      padding: 1.75rem 1.5rem;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      min-height: 190px;
+    }
+
+    .competency-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(20, 16, 13, 0.12);
+      border-color: var(--tiger-orange);
+    }
+
+    .card-num {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--tiger-orange);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--stripe-black);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--ash-dark);
+      line-height: 1.5;
+    }
+
+    .card-link-arrow {
+      margin-top: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--tiger-orange);
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Main Content Sections */
+    .main-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .projects-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-bottom: 6rem;
+    }
+
+    .project-card {
+      background-color: var(--card-surface);
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-thumb-wrap {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--ash);
+    }
+
+    .project-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .project-tag {
+      position: absolute;
+      top: 0.85rem;
+      left: 0.85rem;
+      background-color: rgba(20, 16, 13, 0.9);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.6rem;
+      text-transform: uppercase;
+    }
+
+    .project-body {
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .photo-credit {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--ash);
+      margin-bottom: 0.75rem;
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--stripe-black);
+      line-height: 1.3;
+      margin-bottom: 0.85rem;
+    }
+
+    .project-excerpt {
+      font-size: 0.92rem;
+      color: var(--ash-dark);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-callout {
+      background-color: #EFE4D6;
+      border-left: 3px solid var(--tiger-orange);
+      padding: 0.65rem 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--stripe-black);
+      margin-bottom: 1.5rem;
+      margin-top: auto;
+    }
+
+    .project-action-link {
+      font-weight: 600;
+      color: var(--stripe-black);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: var(--tiger-orange);
+      font-size: 0.9rem;
+      transition: color 0.15s ease;
+    }
+
+    .project-action-link:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Background & Approach Section */
+    .about-wrap {
+      border-top: 2px solid var(--ash);
+      padding-top: 5rem;
+    }
+
+    .about-header {
+      margin-bottom: 3rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 3.5rem;
+      align-items: start;
+    }
+
+    .bio-card {
+      background-color: var(--card-surface);
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 2.5rem 2rem;
+    }
+
+    .bio-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--stripe-black);
+      margin-bottom: 1.25rem;
+    }
+
+    .bio-card p {
+      font-size: 0.95rem;
+      color: var(--ash-dark);
+      line-height: 1.65;
+      margin-bottom: 1.25rem;
+    }
+
+    .credential-group {
+      border-top: 1px solid rgba(89, 84, 76, 0.4);
+      padding-top: 1.25rem;
+      margin-top: 1.25rem;
+    }
+
+    .credential-degree {
+      font-weight: 600;
+      color: var(--stripe-black);
+      font-size: 0.95rem;
+    }
+
+    .credential-school {
+      color: var(--ash-dark);
+      font-size: 0.88rem;
+    }
+
+    /* Right Narrative & Timeline */
+    .quote-statement {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.45rem;
+      line-height: 1.45;
+      color: var(--stripe-black);
+      border-left: 2px solid var(--stripe-black);
+      padding-left: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .timeline-container {
+      position: relative;
+      margin-left: 0.5rem;
+    }
+
+    .timeline-line {
+      position: absolute;
+      top: 0.5rem;
+      bottom: 0.5rem;
+      left: 4px;
+      width: 2px;
+      background-color: var(--ash);
+      opacity: 0.5;
+    }
+
+    .experience-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .experience-item {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 0px;
+      top: 0.35rem;
+      width: 10px;
+      height: 10px;
+      background-color: var(--tiger-orange);
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .exp-category {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ash-dark);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .exp-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--stripe-black);
+      margin-bottom: 0.5rem;
+    }
+
+    .exp-desc {
+      font-size: 0.95rem;
+      color: var(--ash-dark);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--stripe-black);
+      color: var(--field-khaki);
+      padding: 4.5rem 2rem 2.5rem 2rem;
+      border-top: 2px solid var(--ash);
+      font-size: 0.92rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-columns {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .footer-brand h4 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: #FFFFFF;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-brand p {
+      color: var(--field-khaki);
+      max-width: 380px;
+      line-height: 1.6;
+    }
+
+    .footer-heading {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--tiger-orange);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .footer-list a {
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-list a:hover {
+      color: var(--tiger-orange);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(89, 84, 76, 0.4);
+      padding-top: 1.75rem;
+      font-size: 0.82rem;
+      color: var(--field-khaki);
+    }
+
+    /* Responsive Media Queries */
+    @media (max-width: 1024px) {
+      .competencies-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+    .hero {
+      background-position: 75% center !important;
+      min-height: 80vh;
+      padding: 5rem 1.25rem 4rem 1.25rem;
+    }
+
+    .mobile-menu-btn {
+      display: flex;
+    }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: var(--stripe-black);
+      flex-direction: column;
+      padding: 1.5rem 2rem;
+      gap: 1.25rem;
+      border-bottom: 2px solid var(--tiger-orange);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    }
+
+    .nav-links.active {
+      display: flex;
+    }
+
+    /* Fix Card Squishing */
+    .projects-grid {
+      grid-template-columns: 1fr !important;
+      gap: 2rem;
+    }
+
+    .project-card {
+      width: 100%;
+    }
+
+    .card-media {
+      height: 200px;
+    }
+
+    .process-container {
+      grid-template-columns: 1fr !important;
+      gap: 1.5rem;
+    }
+
+
+/* Fix Core Competencies Squishing */
+    .competency-grid,
+    .competencies-grid,
+    .process-container {
+      grid-template-columns: 1fr !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 1.25rem !important;
+    }
+
+    .competency-card,
+    .process-step {
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+/* Fix Footer Mobile Layout (Portrait & Landscape) */
+    footer {
+      width: 100% !important;
+      padding: 3.5rem 1.5rem 2rem 1.5rem !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+    }
+
+    .footer-container {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Stack Bio full-width on top; place Nav & Contact side-by-side below */
+    .footer-columns {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 2rem !important;
+      width: 100% !important;
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1 !important; /* Full width on top */
+      width: 100% !important;
+    }
+
+    .footer-brand h4 {
+      font-size: 1.45rem !important;
+      margin-bottom: 0.75rem !important;
+    }
+
+    .footer-brand p {
+      font-size: 0.95rem !important;
+      line-height: 1.6 !important;
+      max-width: 100% !important;
+      color: var(--field-khaki) !important;
+    }
+
+    .footer-heading {
+      font-size: 0.82rem !important;
+      margin-bottom: 1rem !important;
+      white-space: nowrap !important;
+    }
+
+    .footer-list {
+      gap: 0.75rem !important;
+    }
+
+    .footer-list li {
+      word-break: normal !important;
+    }
+
+    .footer-list a {
+      font-size: 0.92rem !important;
+    }
+
+    .footer-list a[href^="mailto"] {
+      word-break: break-all !important;
+    }
+
+    .footer-bottom {
+      width: 100% !important;
+      margin-top: 2rem !important;
+      padding-top: 1.5rem !important;
+    }
+    /* Prevent horizontal page drift */
+    html, body {
+      overflow-x: hidden !important;
+      width: 100% !important;
+    }
+
+  }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <nav>
+      <a href="/index.html" class="brand-name">Aditya Korde</a>
+      
+
+<!-- Mobile Hamburger Button -->
+      <button class="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" onclick="toggleMobileNav()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+<ul class="nav-links" id="mainNavLinks">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="#selected-spatial-work">Projects</a></li>
+        <li><a href="/Field_Notes.html">Field Notes</a></li>
+        <li><a href="#about">About</a></li>
+        <li class="dropdown" id="contactDropdownContainer">
+          <button class="dropdown-btn" type="button" aria-expanded="false" onclick="toggleContactDropdown(event)">
+            Contact <span style="font-size: 0.7rem;">▾</span>
+          </button>
+          <div class="dropdown-menu">
+            <div class="dropdown-inner">
+              <a href="mailto:adityako2001@gmail.com">Email</a>
+              <a href="https://linkedin.com/in/aditya-korde-6426aa235/" target="_blank" rel="noopener">LinkedIn</a>
+  <a href="https://instagram.com/aditya_k2001" target="_blank" rel="noopener">Instagram</a>
+              <a href="/Assets/Adi%20CV%20Sep%202026%20(4)%20(2).pdf" download>Download CV</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>I use camera traps and satellite mapping to uncover how our wild neighbours live, move and survive.</h1>
+      <div class="hero-actions">
+        <a href="#selected-spatial-work" class="btn-primary">Explore My Work</a>
+        <a href="/Assets/Adi%20CV%20Sep%202026%20(4)%20(2).pdf" download class="btn-secondary">Download CV (PDF)</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Core Competencies -->
+  <section class="competencies-section">
+    <div class="competencies-container">
+      <div class="section-eyebrow">DISCIPLINARY FOCUS</div>
+      <h2 class="section-title">Core Competencies</h2>
+      <p class="section-subtitle">Systematic fieldwork protocols, spatial modeling pipelines, and technical monitoring tools applied across wildlife conservation grids.</p>
+
+      <div class="competencies-grid">
+        <!-- Card 1 -->
+        <a href="/Field_Notes.html" class="competency-card">
+          <div>
+            <div class="card-num">01 // FIELDWORK</div>
+            <div class="card-title">Camera Traps</div>
+            <div class="card-desc">Backcountry camera trap deployment, compass-oriented placement, and equipment security protocols.</div>
+          </div>
+          <div class="card-link-arrow">EXPLORE METHOD →</div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="/Provincial%20Spatial%20Data%20Cleaning.html" class="competency-card">
+          <div>
+            <div class="card-num">02 // GEOPROCESSING</div>
+            <div class="card-title">Provincial Spatial Data Cleaning</div>
+            <div class="card-desc">Reprojecting coordinate reference systems, filtering attribute noise, and preparing spatial layers.</div>
+          </div>
+          <div class="card-link-arrow">EXPLORE DATA PROTOCOL →</div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="/Landscape%20Thresholds%20&%20Disturbance%20Corridors.html" class="competency-card">
+          <div>
+            <div class="card-num">03 // MODELING</div>
+            <div class="card-title">Spatial Analysis</div>
+            <div class="card-desc">Linear road density impact thresholds, wildfire compression corridors, and cutblock security buffers.</div>
+          </div>
+          <div class="card-link-arrow">EXPLORE METHOD →</div>
+        </a>
+
+        <!-- Card 4 -->
+        <a href="/Concrete%20Mitigation%20Plans.html" class="competency-card">
+          <div>
+            <div class="card-num">04 // APPLICATION</div>
+            <div class="card-title">Mitigation Planning</div>
+            <div class="card-desc">Prioritizing road deactivation, wildlife crossing zones, and industrial access management.</div>
+          </div>
+          <div class="card-link-arrow">VIEW DECISION FRAMEWORK →</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Wrap -->
+  <main class="main-wrap">
+
+    <!-- Selected Spatial Work Section -->
+    <section id="selected-spatial-work">
+      <div class="projects-header">
+        <h2 class="section-title">Selected Spatial Work</h2>
+        <p class="section-subtitle">Spatial analysis examining large mammal movement, forestry cutblocks and compound risk corridors in Western Canada</p>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Project 1 -->
+        <article class="project-card">
+          <div class="project-thumb-wrap">
+            <span class="project-tag">BRITISH COLUMBIA</span>
+            <img src="/images/yellowstone-grizzly-bear-road.png" alt="Tweedsmuir Grizzly Density" class="project-thumb">
+          </div>
+          <div class="project-body">
+            <div class="photo-credit">Photo: National Park Service (NPS), public domain</div>
+            <h3 class="project-title">Tweedsmuir Grizzly Density & Road Proximity</h3>
+            <p class="project-excerpt">Evaluating grizzly population stability across 12 GBPUs against provincial road density thresholds and movement buffer overlaps.</p>
+            <div class="stat-callout">11 of 13 sightings compressed into 9% road buffer zone</div>
+            <a href="/Projects/tweedsmuir-grizzly.html" class="project-action-link">View Case Study</a>
+          </div>
+        </article>
+
+        <!-- Project 2 -->
+        <article class="project-card">
+          <div class="project-thumb-wrap">
+            <span class="project-tag">ALBERTA</span>
+            <img src="/images/Grizzly_amongst_ashes.png" alt="Wildfire Hazard & Compound Grizzly Risk" class="project-thumb">
+          </div>
+          <div class="project-body">
+            <div class="photo-credit">Photo: Parks Canada / H. Fengler, via Reuters. Source: GMA News</div>
+            <h3 class="project-title">Wildfire Hazard & Compound Grizzly Risk</h3>
+            <p class="project-excerpt">Spatial analysis evaluating how 1,230 fire incidents compress carnivore movement into road transport corridors.</p>
+            <div class="stat-callout">1,230 fire incidents analyzed across provincial units</div>
+            <a href="/Projects/alberta-wildfire.html" class="project-action-link">View Case Study</a>
+          </div>
+        </article>
+
+        <!-- Project 3 -->
+        <article class="project-card">
+          <div class="project-thumb-wrap">
+            <span class="project-tag">BRITISH COLUMBIA</span>
+            <img src="/images/bear_eating.png" alt="Habitat Security & Strategic Road Deactivation" class="project-thumb">
+          </div>
+          <div class="project-body">
+            <div class="photo-credit">Photo: Thomas D. Mangelsen</div>
+            <h3 class="project-title">Habitat Security & Strategic Road Deactivation</h3>
+            <p class="project-excerpt">Multi-criteria evaluation prioritizing inactive forestry corridors on slopes over 15 degrees to restore secure feeding patches.</p>
+            <div class="stat-callout">558.8 km prioritized on slopes exceeding 15°</div>
+            <a href="/Projects/kootenay-roads.html" class="project-action-link">View Case Study</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Background & Approach Section -->
+    <section id="about" class="about-wrap">
+      <div class="about-header">
+        <h2 class="section-title">Background & Approach</h2>
+        <p class="section-subtitle">Integrating backcountry field monitoring with applied GIS analysis.</p>
+      </div>
+
+      <div class="about-grid">
+        <!-- Left: Bio Card -->
+        <div class="bio-card">
+          <h3>Fieldwork and Spatial Data</h3>
+          <p>I am an early-career wildlife conservationist focusing on large mammal ecology, linear disturbance mitigation, and practical spatial data cleaning across Western Canada.</p>
+          <p>My work combines physically deploying and servicing remote camera arrays with spatial modeling in ArcGIS Pro and QGIS, converting provincial forest tenure and wildfire databases into actionable management plans.</p>
+
+          <div class="credential-group">
+            <div class="credential-degree">MSc Animal Behaviour</div>
+            <div class="credential-school">A.R.U Cambridge</div>
+          </div>
+
+          <div class="credential-group">
+            <div class="credential-degree">BSc Wildlife Conservation</div>
+            <div class="credential-school">Liverpool John Moores University</div>
+          </div>
+
+          <div class="credential-group">
+            <div class="credential-degree">Fieldwork Experience</div>
+            <div class="credential-school">Rewilding Apennines (30+ camera traps) & SGNP Mumbai</div>
+          </div>
+        </div>
+
+        <!-- Right: Narrative Timeline -->
+        <div>
+          <blockquote class="quote-statement">
+            The portfolio reflects a working scientist's record: documented steps from camera trap grids to spatial data cleaning to management decisions.
+          </blockquote>
+
+          <div class="timeline-container">
+            <div class="timeline-line"></div>
+            <div class="experience-list">
+              <div class="experience-item">
+                <div class="timeline-dot"></div>
+                <div class="exp-category">FIELDWORK // ITALY</div>
+                <h3 class="exp-title">Central Apennines Bear Smart Corridors</h3>
+                <p class="exp-desc">Deployed and maintained 30+ remote camera traps with Rewilding Apennines to monitor Marsican brown bear movement across fragmented mountain passes.</p>
+              </div>
+
+              <div class="experience-item">
+                <div class="timeline-dot"></div>
+                <div class="exp-category">FIELDWORK // INDIA</div>
+                <h3 class="exp-title">Sanjay Gandhi National Park Leopard Surveys</h3>
+                <p class="exp-desc">Assisted with camera-trap monitoring and survey grids in Mumbai, observing large cat spatial adaptation to high-density urban edges.</p>
+              </div>
+
+              <div class="experience-item">
+                <div class="timeline-dot"></div>
+                <div class="exp-category">SPATIAL RESEARCH // CANADA</div>
+                <h3 class="exp-title">Western Canadian Carnivore Models</h3>
+                <p class="exp-desc">Modeled road deactivation, early-seral forestry clearings, and compound wildfire risks across British Columbia and Alberta datasets.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-columns">
+        <!-- Left: Identity -->
+        <div class="footer-brand">
+          <h4>Aditya Korde</h4>
+          <p>Early-career wildlife conservationist using camera traps and satellite mapping to understand how wild animals live, move and survive.</p>
+        </div>
+
+        <!-- Center: Navigation -->
+        <div>
+          <div class="footer-heading">NAVIGATION</div>
+          <ul class="footer-list">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="#selected-spatial-work">Projects</a></li>
+            <li><a href="/Field_Notes.html">Field Notes</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="mailto:adityako2001@gmail.com">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Right: Contact -->
+        <div>
+          <div class="footer-heading">CONTACT</div>
+          <ul class="footer-list">
+            <li><a href="mailto:adityako2001@gmail.com">adityako2001@gmail.com</a></li>
+            <li><a href="https://linkedin.com/in/aditya-korde-6426aa235/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://instagram.com/aditya_k2001" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="/Assets/Adi%20CV%20Sep%202026%20(4)%20(2).pdf" download>Download CV (PDF)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-bottom">
+        adityakordewildlifemaps.com
+      </div>
+    </div>
+  </footer>
+
+  <!-- Contact Dropdown Script -->
+  <script>
+    function toggleContactDropdown(event) {
+      event.stopPropagation();
+      var container = document.getElementById('contactDropdownContainer');
+      container.classList.toggle('active');
+    }
+
+    document.addEventListener('click', function(event) {
+      var container = document.getElementById('contactDropdownContainer');
+      if (container && !container.contains(event.target)) {
+        container.classList.remove('active');
+      }
+    });
+  </script>
+
+
+<script>
+    function toggleMobileNav() {
+      var navLinks = document.getElementById('mainNavLinks');
+      if (navLinks) {
+        navLinks.classList.toggle('active');
+      }
+    }
+
+    document.addEventListener('click', function(event) {
+      var nav = document.querySelector('nav');
+      var navLinks = document.getElementById('mainNavLinks');
+      if (nav && navLinks && !nav.contains(event.target)) {
+        navLinks.classList.remove('active');
+      }
+    });
+  </script>
+
+
+</body>
+</html>

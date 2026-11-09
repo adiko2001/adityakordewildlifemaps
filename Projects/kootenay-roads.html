@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Technical Case Study Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Habitat Security & Strategic Road Deactivation",
+    "author": {
+      "@type": "Person",
+      "name": "Aditya Korde"
+    },
+    "description": "Multi-criteria evaluation isolating 558.8 km of inactive forestry roads on steep slopes (>15 degrees) across British Columbia NTS blocks 082G and 082J.",
+    "keywords": "ArcGIS Pro, BC Albers, FTEN road sections, cutblock ecological traps, road deactivation, slope raster, DataBC",
+    "publisher": {
+      "@type": "Person",
+      "name": "Aditya Korde"
+    }
+  }
+  </script>
+
+  <title>Habitat Security & Strategic Road Deactivation | Aditya Korde Wildlife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --field-khaki: #C9BFA0;
+      --card-surface: #F2EEE4;
+      --stripe-black: #14100D;
+      --tiger-orange: #E2591D;
+      --ash: #59544C;
+      --ash-dark: #3A362F;
+      --spruce: #1F3326;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--field-khaki);
+      color: var(--stripe-black);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Navigation Bar */
+    nav {
+      background-color: var(--stripe-black);
+      border-bottom: 2px solid var(--ash);
+      padding: 1.25rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--field-khaki);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Main Container */
+    .case-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 6rem 1.5rem;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-btn {
+      color: var(--field-khaki);
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.15s ease;
+    }
+
+    .dropdown-btn:hover,
+    .dropdown:hover .dropdown-btn {
+      color: var(--tiger-orange);
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      padding-top: 0.5rem;
+      min-width: 190px;
+      z-index: 1000;
+    }
+
+    .dropdown-inner {
+      background-color: var(--stripe-black);
+      border: 1px solid var(--ash);
+      border-top: 2px solid var(--tiger-orange);
+      border-radius: 4px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      padding: 0.5rem 0;
+    }
+
+    .dropdown-inner a {
+      color: #F2EEE4;
+      padding: 0.65rem 1.25rem;
+      display: block;
+      font-size: 0.88rem;
+      text-decoration: none;
+      font-family: var(--font-mono);
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .dropdown-inner a:hover {
+      background-color: var(--tiger-orange);
+      color: #FFFFFF;
+    }
+
+    .dropdown:hover .dropdown-menu,
+    .dropdown.active .dropdown-menu {
+      display: block;
+    }
+
+    /* Back Link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--ash-dark);
+      text-decoration: none;
+      margin-bottom: 2.5rem;
+      transition: color 0.15s ease;
+    }
+
+    .back-link:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Header Block */
+    .case-header {
+      margin-bottom: 3.5rem;
+      border-bottom: 2px solid var(--ash);
+      padding-bottom: 2.5rem;
+    }
+
+    .case-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--tiger-orange);
+      background-color: rgba(20, 16, 13, 0.08);
+      border: 1px solid rgba(226, 89, 29, 0.4);
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .case-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      line-height: 1.2;
+      color: var(--stripe-black);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Header Lead Image Container */
+    .header-image-container {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .header-lead-image {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--ash);
+      border-radius: 3px;
+      box-shadow: 0 4px 12px rgba(20, 16, 13, 0.08);
+      display: block;
+      margin: 0 auto;
+    }
+
+    .header-image-credit {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ash);
+      margin-top: 0.6rem;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    /* Content Sections */
+    .case-section {
+      background-color: var(--card-surface);
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 2.75rem 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      color: var(--stripe-black);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(89, 84, 76, 0.25);
+      padding-bottom: 0.4rem;
+    }
+
+    .case-section > h2:first-of-type {
+      margin-top: 0;
+    }
+
+    h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--stripe-black);
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: var(--ash-dark);
+      font-size: 1.02rem;
+      line-height: 1.75;
+    }
+
+    ul {
+      margin: 1rem 0 1.5rem 1.5rem;
+      color: var(--ash-dark);
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Hyperlinks under Data Used */
+    .dataset-list {
+      list-style: none;
+      margin: 1.25rem 0 1.75rem 0;
+      padding: 0;
+    }
+
+    .dataset-list li {
+      margin-bottom: 0.75rem;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .dataset-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--tiger-orange);
+      font-weight: bold;
+    }
+
+    .dataset-link {
+      color: var(--stripe-black);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: var(--tiger-orange);
+      text-underline-offset: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .dataset-link:hover {
+      color: var(--tiger-orange);
+      background-color: rgba(226, 89, 29, 0.08);
+      padding: 0.1rem 0.3rem;
+      border-radius: 2px;
+    }
+
+    /* Figure Media Containers */
+    .figure-container {
+      margin: 2.75rem 0;
+      text-align: center;
+    }
+
+    .figure-image {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--ash);
+      border-radius: 3px;
+      background-color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(20, 16, 13, 0.08);
+      display: block;
+      margin: 0 auto;
+    }
+
+    .figure-caption {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--ash-dark);
+      margin-top: 0.85rem;
+      line-height: 1.5;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    /* References Section */
+    .references-list {
+      list-style: none;
+      margin: 1rem 0 0 0;
+      padding: 0;
+      font-size: 0.88rem;
+    }
+
+    .references-list li {
+      margin-bottom: 0.75rem;
+      line-height: 1.55;
+      color: var(--ash-dark);
+    }
+
+    .references-list a {
+      color: var(--ash-dark);
+      text-decoration: underline;
+    }
+
+    .references-list a:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--stripe-black);
+      color: var(--field-khaki);
+      padding: 3rem 2rem 2rem 2rem;
+      border-top: 2px solid var(--ash);
+      font-size: 0.92rem;
+    }
+
+    .footer-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-container a {
+      color: var(--field-khaki);
+      text-decoration: none;
+    }
+
+    .footer-container a:hover {
+      color: var(--tiger-orange);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="/index.html" class="nav-brand">Aditya Korde</a>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/index.html#selected-spatial-work">Projects</a></li>
+        
+        <li class="dropdown" id="contactDropdownContainer">
+          <button class="dropdown-btn" type="button" aria-expanded="false" onclick="toggleContactDropdown(event)">
+            Contact <span style="font-size: 0.7rem;">▾</span>
+          </button>
+          <div class="dropdown-menu">
+            <div class="dropdown-inner">
+              <a href="mailto:adityako2001@gmail.com">Email</a>
+              <a href="https://linkedin.com/in/aditya-korde-6426aa235/" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://instagram.com/aditya_k2001" target="_blank" rel="noopener">Instagram</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="case-container">
+    <a href="/index.html" class="back-link">← Return to Homepage</a>
+
+    <header class="case-header">
+      <span class="case-tag">BRITISH COLUMBIA · APPLIED GIS</span>
+      <h1 class="case-title">Habitat Security & Strategic Road Deactivation</h1>
+      <p style="font-size: 1.15rem; color: var(--ash-dark);">
+        Multi-criteria evaluation isolating 558.8 km of inactive forestry roads on steep slopes (>15°) to eliminate ecological traps and control erosion across NTS blocks 082G and 082J.
+      </p>
+
+      <div class="header-image-container">
+        <img class="header-lead-image" src="/images/bear_eating.png" alt="Grizzly bear foraging among early-seral berry bushes">
+        <div class="header-image-credit">
+          Photo: Thomas. D. Mangelsen
+        </div>
+      </div>
+    </header>
+
+    <!-- Context and Methods Section -->
+    <article class="case-section">
+      <h2>Statement of Purpose</h2>
+      <p>
+        Proper management of wildlife requires a thorough understanding of food availability, and risk of mortality. In southern British Columbia, where there is a greater amount of vegetation-based sources than there are meat-based sources, there is a surge of berry crops during the late summer/fall in the months of August and September. This surge is ideal for bears during their hyperphagia to deposit as much fat as possible for hibernation during winter (McLellan and Hovey, 1995). However, the abundance of plant based sources for bears can be affected by anthropogenic activity. For example, after the felling of trees by logging companies, the patches of forest (cutblocks) receive high exposure to sunlight, promoting and speeding up the growth of vegetation in its early seral stage. As a result, these cutblocks serve as ideal foraging sites for bears, who will typically feed on huckleberries, clover, and dandelion (Roever et al., 2010). With the cutblocks overlapping with the logging resource roads, this creates an ecological trap for the grizzly bears.
+      </p>
+      <p>
+        The purpose of this study was to deploy a Multi Criterion Evaluation model to evaluate gaps in protection of grizzly bears (<em>Ursus arctos</em>) on unprotected crown land and come up with a recommendation for grizzly bear recovery in British Columbia.
+      </p>
+
+      <h2>Data Used</h2>
+      <p>These are the datasets used for this project:</p>
+      <ul class="dataset-list">
+        <li>
+          <a class="dataset-link" href="https://open.canada.ca/data/en/dataset/1130248f-f1a3-4956-8b2e-38d29d3e4af7" target="_blank" rel="noopener noreferrer">
+            BC Parks, Ecological Reserves, and Protected Areas
+          </a>
+        </li>
+        <li>
+          <a class="dataset-link" href="https://open.canada.ca/data/dataset/dba6c78a-1bc1-4d4f-b75c-96b5b0e7fd30" target="_blank" rel="noopener noreferrer">
+            BC Grizzly Bear Habitat Classification and Rating
+          </a>
+        </li>
+        <li>
+          <a class="dataset-link" href="https://www2.gov.bc.ca/gov/content/data/geographic-data-services/topographic-data/base-map-online-store" target="_blank" rel="noopener noreferrer">
+            Base Map Online Store
+          </a>
+        </li>
+        <li>
+          <a class="dataset-link" href="https://catalogue.data.gov.bc.ca/dataset/forest-tenure-road-section-lines" target="_blank" rel="noopener noreferrer">
+            Forest Tenure Road Section Lines
+          </a>
+        </li>
+        <li>
+          <a class="dataset-link" href="https://catalogue.data.gov.bc.ca/dataset/harvested-areas-of-bc-consolidated-cutblocks-" target="_blank" rel="noopener noreferrer">
+            Harvested Areas of BC (Consolidated Cutblocks)
+          </a>
+        </li>
+      </ul>
+
+      <h2>Aims and Methods</h2>
+      <p>
+        For this project, all coordinates were in NAD 1983 BC Environment Albers, and the objectives are broken down into three chapters.
+      </p>
+
+      <h3>Chapter 1</h3>
+      <p>
+        The aim of this chapter was to determine the percentage of prime grizzly bear habitat that lied on unprotected land within the Central Canadian Rockies, and the Eastern Kootenay Regions, and the prime grizzly bear foraging habitat that was situated within the protected area of the provincial parks within the same regions. The data on the provincial parks (BC Ecological Parks, Ecological Reserves, and Protected Areas, No date), and the data on the grizzly bear foraging habitat was acquired from the Grizzly Bear Population Estimates (Grizzly Bear Population Estimates, No date). For this study, polygons chosen as prime grizzly bear habitat were those whose primary vegetation/floral composition was given a suitability score of 1 and 2, which, according to the Impact Assessment Agency of Canada, are ideal foraging grounds for these carnivores (Impact Assessment Agency of Canada, 2019). Raster files of digital elevation models were acquired from the Basemap Online Store from the BC Government Portal (Base Map Online Store, No date). Specifically, the DEM raster grids chosen from the basemap for this project were 82J (Central Canadian Rockies/Kananaskis) and 82G (East Kootenays/Fernie).
+      </p>
+      <p>
+        After converting all layers into said coordinate system, including the DEM rasters, the Raster Domain tool was performed on each DEM, to create a polygon. This resulting polygon was then used to create individual layers only displaying the provincial parks and the prime foraging habitat that fell within the raster blocks of 82G and 82J. This was achieved using the Select Layer by Location tool.
+      </p>
+      <p>
+        After all desired layers displaying polygons within the raster grids were created, the Spatial Join was performed. This created a layer with an attribute table, where the column PROT_NAME displayed values that were either ‘Null’, or the names of the provincial parks the prime habitat polygons overlapped with. Using the given total area of the layer resulting from the spatial join, the areas of the habitats within the protected areas of the parks, and of those habitats sitting in unprotected crown land were calculated accordingly.
+      </p>
+      <p>
+        Finally, the proportions (in percentage) of prime habitat sitting inside the parks, and on unprotected crown land in both grids were calculated.
+      </p>
+
+      <h3>Chapter 2</h3>
+      <p>
+        The aim of this chapter was to quantify the overlap between the 500 m buffer around the forest tenure road section line (FTEN_RS_LN) (Forest Tenure Branch, No date) and the patches of cutblocks carved out by logging companies (Harvested Areas of BC, No date).
+      </p>
+      <p>
+        The cutblock data was adjusted such that the harvest start year was 2020, and the harvest end year was 2025, as seral vegetation growth post-harvest does not begin immediately, but rather, fruit and seral vegetation production flourishes in about 4 to 5 years (Keefer et al., 2010; Hertel et al., 2016).
+      </p>
+      <p>
+        First, using the Buffer tool, a 500 m buffer was created on either side of the resource roads passing through both blocks 82J and 82G. This 500 m threshold is based on the study by Proctor et al (2019), who concluded that bears will typically avoid foraging within, or suffer the highest mortality within this buffer.
+      </p>
+      <p>
+        After the 500 m buffer was created, the Intersect tool was used to determine the number of polygons resulting from the overlap of the 500 m buffer and the early seral cutblocks between 2020 and 2025 within 82J and 82G.
+      </p>
+
+      <h3>Chapter 3</h3>
+      <p>
+        The aim of this chapter was to create a master plan on the decommissioning of inactive resource roads using a Multi Criterion Evaluation, by incorporating data on the steepness of the DEMs.
+      </p>
+      <p>
+        First, using the Select by Attributes function, the FTEN_RS_LN was filtered such that a new layer within each grid containing only inactive resource roads was created.
+      </p>
+      <p>
+        After that, the Slope Raster Tool was performed on each DEM grid layer so that they display flat land and mountains with appropriate colour codes.
+      </p>
+      <p>
+        Upon creating the slope rasters, the Raster Calculator tool was performed on these layers to isolate hills/slopes greater than (steeper than) 15 degrees.
+      </p>
+      <p>
+        These newly created rasters were converted in polygon vectors using the Raster to Polygon function.
+      </p>
+      <p>
+        Finally, the Intersect tool was performed to pinpoint and display only those resource roads that collided with steep hillsides above 15 degrees.
+      </p>
+    </article>
+
+    <!-- Results Section -->
+    <article class="case-section">
+      <h2>Results</h2>
+
+      <h3>Chapter 1</h3>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project3Fig1.png" alt="Figure 1: Map displaying prime foraging habitats within 82G Fernie">
+        <div class="figure-caption">
+          Figure 1: Map displaying the total prime foraging habitats within the 82G Fernie DEM raster grid, classified as sitting in unprotected habitat (outside provincial parks, on crown land), and in protected land (inside provincial parks)
+        </div>
+      </div>
+
+      <div class="figure-container" style="margin-top: 3.5rem;">
+        <img class="figure-image" src="/images/Project3Fig2.png" alt="Figure 2: Map displaying prime foraging habitats within 82J Kananaskis">
+        <div class="figure-caption">
+          Figure 2: Map displaying the total prime foraging habitats within the 82J Kananaskis DEM raster grid, classified as sitting in unprotected habitat (outside provincial parks, on crown land), and in protected land (inside provincial parks)
+        </div>
+      </div>
+
+      <p>
+        The total proportion of prime habitat within the Fernie block 82G that was protected, and sat inside the provincial parks, was 6.42%, whereas 93.58% of prime grizzly bear habitat sat outside the parks, on unprotected crown land. Within this grid, the two parks the prime grizzly bear habitat overlapped with were Top of the World Provincial Park and Akamina-Kishinena Provincial Park. Most of the prime habitat that rested in the provincial parks was in Top of the World, summing up to a total of 87.62 km² of protected habitat. On the other hand, Akamina-Kishinena possessed 11.0 km² of protected prime grizzly bear habitat.
+      </p>
+      <p>
+        The total proportion of prime habitat within the Kananaskis block 82J that was protected, and sat inside the provincial parks, was 9.02%, whereas 90.98% of the prime grizzly bear habitat sat outside the parks, on unprotected crown land. Within this grid, the three parks the prime grizzly bear habitat overlapped with were Elk Lakes Provincial Park, Height of the Rockies Provincial Park, and Mount Assiniboine Provincial Park. Most of the prime habitat that rested in the provincial parks was in Mount Assiniboine, summing up to a total of 38.24 km² of protected habitat, whereas the provincial park containing the least amount of prime habitat was Elk Lakes Provincial Parks, summing up to a total of 9.0 km² of protected habitat.
+      </p>
+
+      <h3>Chapter 2</h3>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project3Fig3.png" alt="Figure 3: Map displaying ecological trap zones in Fernie 082G">
+        <div class="figure-caption">
+          Figure 3: Map displaying the total number of ecological trap zones, resulting from the overlap between the 500 m buffers around the resource roads and the cutblocks within the 082G Fernie block
+        </div>
+      </div>
+
+      <div class="figure-container" style="margin-top: 3.5rem;">
+        <img class="figure-image" src="/images/Project3Fig4.png" alt="Figure 4: Map displaying ecological trap zones in Kananaskis 082J">
+        <div class="figure-caption">
+          Figure 4: Map displaying the total number of ecological trap zones, resulting from the overlap between the 500 m buffers around the resource roads and the cutblocks within the 082J Kananaskis block
+        </div>
+      </div>
+
+      <p>
+        The total number of overlaps between the cutblocks and the 500 m buffer of the resource roads within the 82G grid was 1,085. Within this grid, the largest polygon of this overlap possessed an area of 1.73 km² despite geometric slivers below 100 m². In the 82J grid, the total number of overlaps between the cutblocks and the resource roads’ 500 m buffer was 565. The largest polygon of the overlap possessed an area of 1.09 km², whereas the smallest possessed an area of 0.00045 km².
+      </p>
+
+      <h3>Chapter 3</h3>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project3Fig5.png" alt="Figure 5: Map displaying retired resource roads and landslide hazard matrix in Fernie 082G">
+        <div class="figure-caption">
+          Figure 5: Map displaying the retired resource roads aimed at being decommissioned, along with the active ones, and the landslide hazard matrix showing where the terrain is at a slope greater than 15º, within the Fernie 082G block
+        </div>
+      </div>
+
+      <div class="figure-container" style="margin-top: 3.5rem;">
+        <img class="figure-image" src="/images/Project3Fig6.png" alt="Figure 6: Map displaying retired resource roads and landslide hazard matrix in Kananaskis 082J">
+        <div class="figure-caption">
+          Figure 6: Map displaying the retired resource roads aimed at being decommissioned, along with the active ones, and the landslide hazard matrix showing where the terrain is at a slope greater than 15º, within the Kananaskis 082J block
+        </div>
+      </div>
+
+      <p>
+        The total number of inactive resource roads colliding with slopes greater than 15 degrees within the 082G Fernie block was 3,076, whereas it was a total of 340 resource roads colliding with slopes greater than 15 degrees within the 082J Kananaskis block. The total length of the resource roads to be decommissioned within the Fernie 082G block was 412.62 km, whereas it was 146.2 km for the retired resource roads within the Kananaskis 082J block.
+      </p>
+    </article>
+
+    <!-- Discussion and Next Steps Section -->
+    <article class="case-section">
+      <h2>Discussion and Next Steps</h2>
+      <p>
+        The major lack of protection (93.58% for 82G and 90.98% for 82J) demonstrates a skew in land conservation. While protected areas have historically been subject to relegation to land that is economically marginalized (Venter et al., 2018), prime foraging habitat for these large carnivores is typically situated in low elevation riparian areas (Adams et al., 2024). This means that 93.58% and 90.98% (for 82G and 82J, respectively) of ideal low-valley high-productivity habitat with montane slopes is completely subjected to timber logging and harvesting activities.
+      </p>
+      <p>
+        The high frequency of cutblock buffer overlaps in the 082G Fernie and 082J Kananaskis blocks shows that the seral vegetation is highly intertwined with the resource roads, that directly cut through these patches harvested by the logging companies. These ecological traps with areas slightly over 1.00 km² make bears highly conspicuous to roads. The 1,085 cutblock-resource road overlaps in the 082G Fernie block occurred due to broad widespread valley floors, which sustain a network of forests and intertwined clearcuts, as the topographic profile was an elevation ranging from 638 m to 3307 m.
+      </p>
+      <p>
+        There is a high concentration of resource roads and harvest blocks owing to the limited ability of logging equipment to operate on steep terrain (Gucinski et al., 2001). On the contrary, in the 082J Kananaskis block, the steep mountain slopes squeezed the resource roads and early seral cutblocks into narrow valley bottoms, owing to a topographic profile ranging from 787 m to peaks as high as 3,607 m. This increases the anthropogenic threat to bears within the 082J block, as the animals and the vehicles are confined to constricted spaces along the continental divide.
+      </p>
+      <p>
+        This stark topographic difference may also be the reason why the Fernie 082G block had more resource roads colliding with slopes greater than 15 degrees, characterized by an expansive interconnected network of forests and clearcuts; whereas the resource roads colliding with the steep slopes within the Kananaskis 082J block were compressed into narrow valleys and tight passes. When these retired resource roads are targeted for decommissioning, two issues are rectified. First, soil ripping (by mechanical means) reduces the risk of erosion, increases infiltration, and promotes the regrowth of vegetation on rangelands (Switalski et al., 2004).
+      </p>
+      <p>
+        Secondly, the blocking of vehicle access through these retired resource roads eliminates the 500 m buffer projected in Chapter 2. This would mean that blocking or eliminating traffic from these inactive resource roads would increase survival rate of grizzly bears (Boulanger and Stenhouse, 2014).
+      </p>
+
+      <h3 style="margin-top: 2.5rem; font-size: 1.15rem;">Core Sources Including Scientific Papers</h3>
+      <ul class="references-list">
+        <li>Proctor, M.F., McLellan, B.N., Stenhouse, G.B., Mowat, G., Lamb, C.T. and Boyce, M.S. (2019). Effects of roads and motorized human access on grizzly bear populations in British Columbia and Alberta, Canada. <em>Ursus</em>, (30e2), pp.16-39.</li>
+        <li>Impact Assessment Agency of Canada (2019). Canadian Impact Assessment Registry. [online] Iaac-aeic.gc.ca. Available at: <a href="https://iaac-aeic.gc.ca/050/evaluations/document/104510?culture=en-CA" target="_blank" rel="noopener noreferrer">https://iaac-aeic.gc.ca/050/evaluations/document/104510?culture=en-CA</a> [Accessed: 22 September 2026].</li>
+        <li>McLellan, B.N. and Hovey, F.W. (1995) ‘The diet of grizzly bears in the Flathead River drainage of southeastern British Columbia’. <em>Canadian Journal of Zoology</em>, 73(4), pp.704-712.</li>
+        <li>McLellan, B.N. (2011). Implications of a high-energy and low-protein diet on the body composition, fitness, and competitive abilities of black (<em>Ursus americanus</em>) and grizzly (<em>Ursus arctos</em>) bears. <em>Canadian Journal of Zoology</em>, 89(6), pp.546-558.</li>
+      </ul>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div>
+        <strong>Aditya Korde</strong> · Spatial Conservation & Applied GIS
+      </div>
+      <div>
+        adityakordewildlifemaps.com
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleContactDropdown(event) {
+      event.stopPropagation();
+      var container = document.getElementById('contactDropdownContainer');
+      container.classList.toggle('active');
+    }
+
+    document.addEventListener('click', function(event) {
+      var container = document.getElementById('contactDropdownContainer');
+      if (container && !container.contains(event.target)) {
+        container.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>

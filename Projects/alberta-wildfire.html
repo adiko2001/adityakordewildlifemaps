@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Technical Case Study Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Wildfire Hazard & Compound Grizzly Risk",
+    "author": {
+      "@type": "Person",
+      "name": "Aditya Korde"
+    },
+    "description": "Spatial modeling across 1,230 wildfire perimeters in Alberta to evaluate where fire regimes and perimeter constriction compress carnivore movement into active transport corridors.",
+    "keywords": "ArcGIS Pro, NAD 1983 10TM, AEPA Open Data, Alberta Wildfire, Grizzly Bear Recovery Zones, Multi-Criteria Evaluation",
+    "publisher": {
+      "@type": "Person",
+      "name": "Aditya Korde"
+    }
+  }
+  </script>
+
+  <title>Wildfire Hazard & Compound Grizzly Risk | Aditya Korde Wildlife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --field-khaki: #C9BFA0;
+      --card-surface: #F2EEE4;
+      --stripe-black: #14100D;
+      --tiger-orange: #E2591D;
+      --ash: #59544C;
+      --ash-dark: #3A362F;
+      --spruce: #1F3326;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--field-khaki);
+      color: var(--stripe-black);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Navigation Bar */
+    nav {
+      background-color: var(--stripe-black);
+      border-bottom: 2px solid var(--ash);
+      padding: 1.25rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-brand:visited {
+      color: #FFFFFF;
+    }
+
+    .nav-brand:hover {
+      color: var(--tiger-orange);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--field-khaki);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Contact Dropdown Menu */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      color: var(--field-khaki);
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0.5rem 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.15s ease;
+    }
+
+    .dropbtn:hover, .dropdown:hover .dropbtn {
+      color: var(--tiger-orange);
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: var(--stripe-black);
+      min-width: 230px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      border: 1px solid var(--ash);
+      border-radius: 3px;
+      padding: 0.5rem 0;
+      z-index: 150;
+    }
+
+    .dropdown-content a {
+      color: #F2EEE4;
+      padding: 0.65rem 1.25rem;
+      text-decoration: none;
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .dropdown-content a:hover {
+      background-color: rgba(226, 89, 29, 0.15);
+      color: var(--tiger-orange);
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Main Container */
+    .case-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 6rem 1.5rem;
+    }
+
+    /* Back Link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--ash-dark);
+      text-decoration: none;
+      margin-bottom: 2.5rem;
+      transition: color 0.15s ease;
+    }
+
+    .back-link:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Header Block */
+    .case-header {
+      margin-bottom: 3.5rem;
+      border-bottom: 2px solid var(--ash);
+      padding-bottom: 2.5rem;
+    }
+
+    .case-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--tiger-orange);
+      background-color: rgba(20, 16, 13, 0.08);
+      border: 1px solid rgba(226, 89, 29, 0.4);
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .case-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      line-height: 1.2;
+      color: var(--stripe-black);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Header Lead Image Container */
+    .header-image-container {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .header-lead-image {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--ash);
+      border-radius: 3px;
+      box-shadow: 0 4px 12px rgba(20, 16, 13, 0.08);
+      display: block;
+      margin: 0 auto;
+    }
+
+    .header-image-credit {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ash);
+      margin-top: 0.6rem;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    /* Content Sections */
+    .case-section {
+      background-color: var(--card-surface);
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 2.75rem 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      color: var(--stripe-black);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(89, 84, 76, 0.25);
+      padding-bottom: 0.4rem;
+    }
+
+    .case-section > h2:first-of-type {
+      margin-top: 0;
+    }
+
+    h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--stripe-black);
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: var(--ash-dark);
+      font-size: 1.02rem;
+      line-height: 1.75;
+    }
+
+    ul {
+      margin: 1rem 0 1.5rem 1.5rem;
+      color: var(--ash-dark);
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Links under Data Used */
+    .dataset-list {
+      list-style: none;
+      margin: 1.25rem 0 1.75rem 0;
+      padding: 0;
+    }
+
+    .dataset-list li {
+      margin-bottom: 0.75rem;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .dataset-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--tiger-orange);
+      font-weight: bold;
+    }
+
+    .dataset-link {
+      color: var(--stripe-black);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: var(--tiger-orange);
+      text-underline-offset: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .dataset-link:hover {
+      color: var(--tiger-orange);
+      background-color: rgba(226, 89, 29, 0.08);
+      padding: 0.1rem 0.3rem;
+      border-radius: 2px;
+    }
+
+    /* Visual Media & Figures */
+    .figure-container {
+      margin: 2.75rem 0;
+      text-align: center;
+    }
+
+    .figure-image {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--ash);
+      border-radius: 3px;
+      background-color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(20, 16, 13, 0.08);
+      display: block;
+      margin: 0 auto;
+    }
+
+    .figure-caption {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--ash-dark);
+      margin-top: 0.85rem;
+      line-height: 1.5;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    /* Math notation display */
+    .math {
+      font-family: var(--font-mono);
+      background: rgba(20, 16, 13, 0.05);
+      padding: 0.1rem 0.35rem;
+      border-radius: 2px;
+      font-size: 0.95em;
+    }
+
+    /* References Section */
+    .references-list {
+      list-style: none;
+      margin: 1rem 0 0 0;
+      padding: 0;
+      font-size: 0.88rem;
+    }
+
+    .references-list li {
+      margin-bottom: 0.75rem;
+      line-height: 1.55;
+      color: var(--ash-dark);
+    }
+
+    .references-list a {
+      color: var(--ash-dark);
+      text-decoration: underline;
+    }
+
+    .references-list a:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--stripe-black);
+      color: var(--field-khaki);
+      padding: 3rem 2rem 2rem 2rem;
+      border-top: 2px solid var(--ash);
+      font-size: 0.92rem;
+    }
+
+    .footer-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-container a {
+      color: var(--field-khaki);
+      text-decoration: none;
+    }
+
+    .footer-container a:hover {
+      color: var(--tiger-orange);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="/index.html" class="nav-brand">Aditya Korde</a>
+      <ul class="nav-links">
+        <li><a href="/index.html" title="Home Page">Home</a></li>
+        <li><a href="/index.html#selected-spatial-work">Projects</a></li>
+        <li class="dropdown">
+          <button class="dropbtn">Contact &#9662;</button>
+          <div class="dropdown-content">
+            <a href="mailto:adityako2001@gmail.com">Email</a>
+            <a href="https://www.linkedin.com/in/aditya-korde-6426aa235/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://www.instagram.com/aditya_k2001" target="_blank" rel="noopener noreferrer">Instagram</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="case-container">
+    <a href="/index.html" class="back-link">&larr; Return to Homepage</a>
+
+    <header class="case-header">
+      <span class="case-tag">ALBERTA · CONSERVATION SPATIAL MODEL</span>
+      <h1 class="case-title">Wildfire Hazard & Compound Grizzly Risk</h1>
+      <p style="font-size: 1.15rem; color: var(--ash-dark);">
+        Spatial modeling evaluating how 1,230 wildfire incidents interact with provincial recovery zones and linear transport infrastructure across Alberta.
+      </p>
+
+      <div class="header-image-container">
+        <img class="header-lead-image" src="/images/Grizzly_amongst_ashes.png" alt="Grizzly bear resting amongst charred forest and ashes">
+        <div class="header-image-credit">
+          Photo: Parks Canada / H. Fengler, via Reuters. Source: GMA News
+        </div>
+      </div>
+    </header>
+
+    <article class="case-section">
+      <h2>Context and Background</h2>
+      <p>
+        As large carnivores with a large home range, grizzly bears possess a high sensitivity to environmental and anthropogenic disturbances. The purpose of this project was to quantify and assess the effects of the 2024 Alberta wildfires on the network of Alberta Grizzly Bear Recovery Management plan by Gavin Berg on a province wide scale.
+      </p>
+
+      <h2>Data Used</h2>
+      <p>These are the datasets used for this project:</p>
+      <ul class="dataset-list">
+        <li>
+          <a class="dataset-link" href="https://open.canada.ca/data/en/dataset/a221e7a0-4f46-4be7-9c5a-e29de9a3447e" target="_blank" rel="noopener noreferrer">
+            Historical wildfire data: 2006 to 2025
+          </a>
+        </li>
+        <li>
+          <a class="dataset-link" href="https://open.canada.ca/data/en/dataset/8a047dd2-00c2-4eea-b77e-82ea8ab5c42f" target="_blank" rel="noopener noreferrer">
+            Grizzly Bear Management Areas
+          </a>
+        </li>
+        <li>
+          <a class="dataset-link" href="https://app.geo.ca/en-ca/map-browser/record/13283637-2bf4-42c6-9c0f-2851ad845cdb" target="_blank" rel="noopener noreferrer">
+            Altalis Data on Railway and Road Line Vectors Across Alberta
+          </a>
+        </li>
+      </ul>
+
+      <h2>Aims and Methods</h2>
+      <p>
+        For this project, all coordinates were in NAD 1983 Alberta 10TM, and the objectives are broken down into four chapters.
+      </p>
+
+      <h3>Chapter 1</h3>
+      <p>
+        This chapter aimed at quantifying the total number of wildfires, their proportion within each management zone, the proportion of hectares burnt within each management zone as well as the density of wildfires per 1000 km² within each management zone established by Gavin Berg. The proportion of wildfires in each management zone was achieved by dividing the number of individual incendiary incidents within each zone by the total incidents in 2024 across all zones and outside.
+      </p>
+      <p>
+        To quantify the density per 1000 square km, the total area for each management zone was quantified first, using the Summary Statistics tool, convert those values from square m to square km using the Add Field and Calculate tools to display them in a new column. The Calculate tool was used again to determine the density per 1000 square km by multiplying the density of wildfires by 1000.
+      </p>
+      <p>
+        To visualize hotspots and geographic trends across Alberta, a Kernel Density Estimate was performed on the individual 1,230 wildfire points. The output cell size was configured to 1,000 m, creating a 1 to 1 ratio, where each pixel ultimately represents 1 km² of physical land area (McDermid et al., n.d.). The search radius was configured to 50,000 m (50 km), creating a smoother, more continuous map to better visualize how large carnivore, such as grizzly bears travel and disperse across large regions. The criteria for the Output Cell Value was set to Density, and the Area units were set to Square kilometers.
+      </p>
+
+      <h3>Chapter 2</h3>
+      <p>
+        This chapter aimed at quantifying the total hectares of canopy burnt within each zone, including the number of classes of each individual fire event within the management zones into, according to the Historical Wildfire Data Dictionary provided by the Ministry of Forestry and Parks of the Government of Alberta.
+      </p>
+
+      <h3>Chapter 3</h3>
+      <p>
+        This chapter aimed at quantifying the total number of wildfires in 2024 that occurred within 500 metres of roads and railways, which is an established threshold, since grizzly bears refrain from entering habitat falling within this distance, or are killed within this distance. The Near tool was performed to display the distances from each individual fire point to the line vector data of the roads and railway.
+      </p>
+
+      <h3>Chapter 4</h3>
+      <p>
+        This chapter aimed at gravitating from baseline mapping that was descriptive to conservation modeling that is predictive, on the scale of a landscape. A multi-criteria evaluation matrix was performed to acquire the following objectives:
+      </p>
+      <ul>
+        <li>Dimensions of heterogeneous environments that were standardized</li>
+        <li>Quantify the structural vulnerability of landscapes</li>
+        <li>Modelling a compound disturbance map of the transportation networks, management zones, and individual fire points</li>
+      </ul>
+      <p>
+        To display the threat level of each variable (wildfire incidents, management zone type, and railway and road networks), a 5 Class Quantile Classification method was used to divide and box the variables' measurements into 5 equally sized slots, where the lowest 20% (Classed as 1) represented the lowest threat, and the highest 20% (Classed as 5) represented the greatest threat. In the case of the fire incidents, the highest and lowest wildfire density ranges from the original KDE fire density hotspot raster were classified as 1 and 5, respectively.
+      </p>
+      <p>
+        In the case of standardizing the dimensions of each of the Gavin Berg management zones, including the quantifying their structural vulnerability, the Polygon to Raster tool was performed so that these zones were projected in 1,000 meter pixel squares, akin to the fire density KDE map. Using the Reclassify tool, these newly formed management zone raster layers were soon individually classified and assigned their unique quantile value accordingly. Subsequently, these reclassified raster layers were merged together to create a unified raster file. This unified raster file was once again reclassified to be assigned a baseline risk score of 1.
+      </p>
+      <p>
+        As for the road and railway line vector layers, individually, they were first passed through the Distance Accumulation tool, then reclassified, such that the range of 0 to 500 m was given a quantile value of 5. The remainder of the ranges, which were subsequently assigned their respective quantile values, were assigned minimum and maximum values based on studies. They were ultimately merged together using the Cell Statistics.
+      </p>
+      <p>
+        Finally, the reclassified merged habitat grid, transport grid, and reclassified KDE fire density hotspot were multiplied together to display the compound disturbance map.
+      </p>
+    </article>
+
+    <!-- Results Section -->
+    <article class="case-section">
+      <h2>Results</h2>
+
+      <h3>Chapter 1</h3>
+      <p>
+        Table 1: Table displaying the total number of wildfires in each management zone and the range outside these, including the total proportion
+      </p>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project2Tab1.png" alt="Table 1: Wildfire Counts and Proportions by Management Zone">
+      </div>
+
+      <p>
+        The total number of fires in the core management area, secondary access management area, support zone, and habitat linkage were 99, 147, 264, and 32, respectively. There was a total of 688 individual fire incidents outside these management zones.
+      </p>
+      <p>
+        The proportion of fires in the core management area, secondary access management area, support zone, and habitat linkage were 8.05%, 11.95%, 21.46%, and 2.6%, respectively. The land outside these established management zones accounted for 55.93% of wildfires.
+      </p>
+
+      <p>
+        Table 2: Table displaying the density of wildfire per 1,000 km² in each of the Gavin Berg management zones
+      </p>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project2Tab2.png" alt="Table 2: Density of Wildfire per 1,000 sq km">
+      </div>
+
+      <div class="figure-container" style="margin-top: 3.5rem;">
+        <img class="figure-image" src="/images/Project2Fig1.png" alt="Figure 1: Kernel density estimate hotspot analysis of 2024 wildfires">
+        <div class="figure-caption">
+          Figure 1: Map displaying a Kernel density estimate hotspot analysis of the concentration of 2024 wildfires across Alberta and all 4 grizzly bear conservation management zones established by Gavin Berg
+        </div>
+      </div>
+
+      <p>
+        The density of fires per 1000 square km in the core management area, secondary access management area, support zone, and habitat linkage were 2.66, 2.96, 4.28, and 6.06, respectively. Summary statistics provided by the Kernel density estimate gave a peak hotspot value of 29.00 fires per 1,000 km² with a heavy concentration near the Dillon River Wildland.
+      </p>
+      <p>
+        The total percentage of hectares burnt in the core management area, secondary access management area, support zone, and habitat linkage was 0.35%, 0.31%, 0.14%, and 0.001%, respectively. There was a total of 688 individual fire incidents outside these management zones.
+      </p>
+
+      <h3>Chapter 2</h3>
+      <p>
+        Table 3: Table displaying the total amount of canopy lost in hectares in each of the 4 management zones, including outside
+      </p>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project2Tab3.png" alt="Table 3: Total Canopy Lost in Hectares">
+      </div>
+
+      <p>
+        The total canopy in hectares lost within the core management area, secondary access management area, support zone, and habitat linkage was 13131.92, 15559.08, 8928.68, and 4.26, respectively. As for the fire incidents outside the management zones, the total hectares burnt were 677249.69 ha.
+      </p>
+
+      <p>
+        Table 4: Table displaying the amount of different size classes of 2024 fire incidents within each of the four management zones
+      </p>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project2Tab4.png" alt="Table 4: Size Classes of Fire Incidents">
+      </div>
+
+      <p>
+        Within the core management zone, the number of fire incidents labelled as Class A, B, C, D, and E were 72, 19, 5, 0, and 3, respectively. The number of fire incidents labelled as Class A, B, C, D, and E within the secondary access management zone was 95, 38, 9, 3, and 2, respectively. The number of fire incidents labelled as Class A, B, C, D, and E within the support zone was 165, 83, 9, 5, and 2, respectively. As for the habitat linkage zone, the number of fire incidents labelled as Class A, B, C, D, and E were 29, 3, 0, 0, and 0, respectively.
+      </p>
+
+      <h3>Chapter 3</h3>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project2Fig2.png" alt="Figure 2: Wildfires within 500m of Roads">
+        <div class="figure-caption">
+          Figure 2: Map displaying all 2024 wildfire incidents that occurred within 500 meters of roads across Alberta
+        </div>
+      </div>
+
+      <p>
+        The number of fires in the core management zone, secondary access management zone, support zone, and habitat linkage that fell within 500 meters of roads was 60, 86, 181, and 29, respectively.
+      </p>
+
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project2Fig3.png" alt="Figure 3: Wildfires within 500m of Railways">
+        <div class="figure-caption">
+          Figure 3: Map displaying all 2024 wildfire incidents that occurred within 500 m of railways
+        </div>
+      </div>
+
+      <p>
+        The number of fires in the core management zone, secondary access management zone, support zone, and habitat linkage that fell within 500 meters of railways was 2, 3, 6, and 3, respectively.
+      </p>
+
+      <h3>Chapter 4</h3>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project2Fig4.png" alt="Figure 4: Wildfire Hazard Intensity Profile">
+        <div class="figure-caption">
+          Figure 4: Map Displaying the Wildfire Hazard Intensity Profile in Alberta. Using a 5 Class quantile, the negligible Wildfire Hazard was classified as 1, whereas the extreme wildfire hazard was classified as 5
+        </div>
+      </div>
+
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project2Fig5.png" alt="Figure 5: Grizzly Bear Habitat Vulnerability Matrix">
+        <div class="figure-caption">
+          Figure 5: Map displaying the vulnerability matrix of the four Gavin Berg management zones, including the area outside these. Using a 5 class quantile distribution, the area outside the management zones was classified as a 1, whereas the habitat linkage zone was classified as 5
+        </div>
+      </div>
+
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project2Fig6.png" alt="Figure 6: Anthropogenic Transport Exposure">
+        <div class="figure-caption">
+          Figure 6: Map displaying exposure to transport; both railways and roads. Specifically, the exposure of structural landscape to anthropogenic transport infrastructure is visualized.
+        </div>
+      </div>
+
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project2Fig7.png" alt="Figure 7: Tri-Factor Composite Risk Index">
+        <div class="figure-caption">
+          Figure 7: Map displaying the compound disturbance using the tri-factor composite risk index.
+        </div>
+      </div>
+
+      <p>
+        Upon examining the standalone table providing details on the compound disturbance effect, it was revealed that the composite risk index peaks at a score of 60. Upon closer assessment, a particular spatial combination was followed: a <span class="math">3 * 4 * 5</span> model. These cells occur where the wildfire hazards are moderate (3), the habitat is a support zone (4), and the hazards occur within 500 m of a road or railway.
+      </p>
+    </article>
+
+    <!-- Discussion and Next Steps -->
+    <article class="case-section">
+      <h2>Discussion and Next Steps</h2>
+      <p>
+        While the support zone was the management area that underwent the highest number of wildfire incidents, the zone with the greatest density was the habitat linkage zone. Thus, while wildfires in the support zone were in abundance, the landscape and its inhabiting wildlife, particularly grizzly bears, may not have undergone the extreme stress and bottleneck effects as the habitat linkage zone, and its inhabiting grizzly bears, owing to the latter's higher fire concentration.
+      </p>
+      <p>
+        One of the flaws with this analysis is that the search radius of 50,000 m (50 km) is restricted to large mammals with a large dispersal rate. Thus wildlife assessments involving other groups of species will have a different search radius. The figures for the search radius involving animals like lagomorphs, amphibians would be smaller, ranging from several hundred meters to no more than a few kilometers, to reflect the micro-scale survival mechanism of these animals.
+      </p>
+      <p>
+        The management zone with the greatest amount of canopy burnt was the secondary access management zone, followed by the core management zone. The greatest canopy amount burnt within the core management zone was 6966 hectares. Incidents in the core management zone have a long-term conservation implication, particularly on grizzly bear sows with cubs, as they will restrict and compress their movement to a much smaller range, characterized by slopes being steeper and elevation being higher, to prevent territorial overlap with unknown males, and thus, reduce the risk of infanticide. In the event of a wildfire, the horizontal cover provided by shrubs and trees therefore makes sows and cubs more conspicuous and easily detected by unknown males. Moreover, grizzly bears running from wildfires in the core and secondary management zones that enter the support zone will be in greater conflict with humans, as this zone's primary aim is to manage attractants that can fuel human wildlife conflict. In the case of the habitat linkage zone, grizzly bears entering here will not just face a long-term danger of becoming isolated genetic units owing to geographic barriers but will also face significant casualties of wildlife vehicle collisions as the horizontal cover aimed at improving connectivity by flanking roads and railways is compromised.
+      </p>
+      <p>
+        The zone with the greatest fire incident count within 500 metres of roads and railways was the conflict-mitigating support zone. This may suggest high road collision casualties or crossing avoidance behaviours prior to any agonistic human animal interaction.
+      </p>
+      <p>
+        Despite the Habitat Linkage Zones theoretically displaying the highest vulnerability due to their high perimeter-to-area ratio, they did not reach their highest point due to the Support Zone matrices absorbing the maximum risk, characterized by the combination of the critical mortality corridor of the 500 m transportation trap, and the moderate wildfire hazard. Special attention is to be put on this combination as the degradation of the Support Zones causes bears, particularly sows with cubs, to abandon disturbed forest, and spill into interfaces with high chances of encounters with anthropogenic attractants, consequently elevating the risk of conflict, and road casualties (Value 5).
+      </p>
+      <p>
+        Despite grizzly bears displaying a high likelihood of avoidance behaviours within 500 metres of roads and/or a high mortality rate, light activity results in a surge of vegetation, such as growth and maturation, which consequently attracts these carnivores, creating an ecological trap for them. During the spring season, in parks with more mountainous terrain, grizzly bears target graminoids and horsetail at lower elevation. The early availability of vegetation can be boosted when in close proximity to roads and railways, through albedos, and the activity of snow plowing.
+      </p>
+      <p>
+        The pattern of outbreaks of wildfires across the province of Alberta is mixed. For example, in the region of the Rocky Mountains, high intensity fires that eradicate and clear out a majority of the canopy are prominent, whereas in west-central Alberta, the foothills experience a mix in severity of fire outbreak patterns. There are also intense fire suppression methods carried out in the foothills. As a result, these foothills lack sufficient open canopy and vegetation in its early seral stage that serves as an appropriate foraging site for grizzly bears. This means grizzly bears in the more mountainous terrain will have greater access to food as opposed to individuals residing in the foothill terrain.
+      </p>
+      <p>
+        Overall, there is a critical, immediate, and greater need to better understand adequate fire control methods that do not compromise or hinder root and berry growth but also do not compromise prime habitat that would force them into areas that bring them into agonistic interactions with humans and create ecological traps where optimal sources for foraging are met with high risk of vehicular caused mortality.
+      </p>
+      <p>
+        These 10 tri-factor spatial coordinates consisting of the convergence of the moderate wildfire hazard, high habitat vulnerability matrix, and critical mortality corridor can be pinpointed such that agencies can implement localized exclusion fencing along these 10 high-risk locations, instead of several kilometers province-wide.
+      </p>
+
+      <h3 style="margin-top: 2.5rem; font-size: 1.15rem;">Core Sources & Literature</h3>
+      <ul class="references-list">
+        <li>Mcdermid, G., Nielsen, S., Franklin, S. and Stenhouse, G. (n.d.). <em>Ten Years of Geospatial Research for Alberta Grizzly Bear Conservation Background and Relevance</em>. Available at: <a href="https://rose.geog.mcgill.ca/ski/system/files/fm/2011/McDermid.pdf" target="_blank" rel="noopener noreferrer">rose.geog.mcgill.ca/ski/system/files/fm/2011/McDermid.pdf</a>.</li>
+        <li>Munro, R.H. (2000). <em>The impacts of transportation corridors on grizzly and black bear habitat use patterns near Golden, BC</em> (Doctoral dissertation, University of British Columbia).</li>
+        <li>Pollock, S.Z., Nielsen, S.E. St Clair, C.C. (1985). <em>A railway increases the abundance and accelerates the phenology of bear-attracting plants in a forested, mountain park</em>. Ecosphere 8, e01985.</li>
+        <li>Roever, C.L., Boyce, M.S. and Stenhouse, G.B. (2010). <em>Grizzly bear movements relative to roads: application of step selection functions</em>. Ecography, 33(6), pp.1113-1122.</li>
+        <li>Souliere, C.M., Coogan, S.C., Stenhouse, G.B. and Nielsen, S.E. (2020). <em>Harvested forests as a surrogate to wildfires in relation to grizzly bear food-supply in west-central Alberta</em>. Forest Ecology and Management, 456, p.117685.</li>
+      </ul>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div>
+        <strong>Aditya Korde</strong> · Spatial Conservation & Applied GIS
+      </div>
+      <div>
+        adityakordewildlifemaps.com
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

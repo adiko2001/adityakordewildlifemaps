@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Technical Case Study Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Tweedsmuir Grizzly Density & Road Proximity Analysis",
+    "author": {
+      "@type": "Person",
+      "name": "Aditya Korde"
+    },
+    "description": "Spatial analysis evaluating grizzly bear sightings across 500 m transport corridors and testing regional densities across 12 GBPUs against provincial viability thresholds.",
+    "keywords": "ArcGIS Pro, BC Albers, Grizzly Bear Population Units, GBPU, Manly Selection Index, Highway 20, DataBC",
+    "publisher": {
+      "@type": "Person",
+      "name": "Aditya Korde"
+    }
+  }
+  </script>
+
+  <title>Tweedsmuir Grizzly Density & Road Proximity | Aditya Korde Wildlife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --field-khaki: #C9BFA0;
+      --card-surface: #F2EEE4;
+      --stripe-black: #14100D;
+      --tiger-orange: #E2591D;
+      --ash: #59544C;
+      --ash-dark: #3A362F;
+      --spruce: #1F3326;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--field-khaki);
+      color: var(--stripe-black);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Navigation Bar */
+    nav {
+      background-color: var(--stripe-black);
+      border-bottom: 2px solid var(--ash);
+      padding: 1.25rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-brand:visited {
+      color: #FFFFFF;
+    }
+
+    .nav-brand:hover {
+      color: var(--tiger-orange);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--field-khaki);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Contact Dropdown Menu */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      color: var(--field-khaki);
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0.5rem 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.15s ease;
+    }
+
+    .dropbtn:hover, .dropdown:hover .dropbtn {
+      color: var(--tiger-orange);
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: var(--stripe-black);
+      min-width: 230px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      border: 1px solid var(--ash);
+      border-radius: 3px;
+      padding: 0.5rem 0;
+      z-index: 150;
+    }
+
+    .dropdown-content a {
+      color: #F2EEE4;
+      padding: 0.65rem 1.25rem;
+      text-decoration: none;
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .dropdown-content a:hover {
+      background-color: rgba(226, 89, 29, 0.15);
+      color: var(--tiger-orange);
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Main Container */
+    .case-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 6rem 1.5rem;
+    }
+
+    /* Back Link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--ash-dark);
+      text-decoration: none;
+      margin-bottom: 2.5rem;
+      transition: color 0.15s ease;
+    }
+
+    .back-link:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Header Block */
+    .case-header {
+      margin-bottom: 3.5rem;
+      border-bottom: 2px solid var(--ash);
+      padding-bottom: 2.5rem;
+    }
+
+    .case-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--tiger-orange);
+      background-color: rgba(20, 16, 13, 0.08);
+      border: 1px solid rgba(226, 89, 29, 0.4);
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .case-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      line-height: 1.2;
+      color: var(--stripe-black);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Header Lead Image Container */
+    .header-image-container {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .header-lead-image {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--ash);
+      border-radius: 3px;
+      box-shadow: 0 4px 12px rgba(20, 16, 13, 0.08);
+      display: block;
+      margin: 0 auto;
+    }
+
+    .header-image-credit {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ash);
+      margin-top: 0.6rem;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    /* Content Card Sections */
+    .case-section {
+      background-color: var(--card-surface);
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 2.75rem 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      color: var(--stripe-black);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(89, 84, 76, 0.25);
+      padding-bottom: 0.4rem;
+    }
+
+    .case-section > h2:first-of-type {
+      margin-top: 0;
+    }
+
+    h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--stripe-black);
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: var(--ash-dark);
+      font-size: 1.02rem;
+      line-height: 1.75;
+    }
+
+    ul {
+      margin: 1rem 0 1.5rem 1.5rem;
+      color: var(--ash-dark);
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Hyperlinks under Data Used */
+    .dataset-list {
+      list-style: none;
+      margin: 1.25rem 0 1.75rem 0;
+      padding: 0;
+    }
+
+    .dataset-list li {
+      margin-bottom: 0.75rem;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .dataset-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--tiger-orange);
+      font-weight: bold;
+    }
+
+    .dataset-link {
+      color: var(--stripe-black);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: var(--tiger-orange);
+      text-underline-offset: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .dataset-link:hover {
+      color: var(--tiger-orange);
+      background-color: rgba(226, 89, 29, 0.08);
+      padding: 0.1rem 0.3rem;
+      border-radius: 2px;
+    }
+
+    /* Figure Media Containers */
+    .figure-container {
+      margin: 2.75rem 0;
+      text-align: center;
+    }
+
+    .figure-image {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--ash);
+      border-radius: 3px;
+      background-color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(20, 16, 13, 0.08);
+      display: block;
+      margin: 0 auto;
+    }
+
+    .figure-caption {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--ash-dark);
+      margin-top: 0.85rem;
+      line-height: 1.5;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    /* References Section */
+    .references-list {
+      list-style: none;
+      margin: 1rem 0 0 0;
+      padding: 0;
+      font-size: 0.88rem;
+    }
+
+    .references-list li {
+      margin-bottom: 0.75rem;
+      line-height: 1.55;
+      color: var(--ash-dark);
+    }
+
+    .references-list a {
+      color: var(--ash-dark);
+      text-decoration: underline;
+    }
+
+    .references-list a:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--stripe-black);
+      color: var(--field-khaki);
+      padding: 3rem 2rem 2rem 2rem;
+      border-top: 2px solid var(--ash);
+      font-size: 0.92rem;
+    }
+
+    .footer-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-container a {
+      color: var(--field-khaki);
+      text-decoration: none;
+    }
+
+    .footer-container a:hover {
+      color: var(--tiger-orange);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="/index.html" class="nav-brand">Aditya Korde</a>
+      <ul class="nav-links">
+        <li><a href="/index.html" title="Home Page">Home</a></li>
+        <li><a href="/index.html#selected-spatial-work">Projects</a></li>
+        <li class="dropdown">
+          <button class="dropbtn">Contact &#9662;</button>
+          <div class="dropdown-content">
+            <a href="mailto:adityako2001@gmail.com">Email</a>
+            <a href="https://www.linkedin.com/in/aditya-korde-6426aa235/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://www.instagram.com/aditya_k2001" target="_blank" rel="noopener noreferrer">Instagram</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="case-container">
+    <a href="/index.html" class="back-link">&larr; Return to Homepage</a>
+
+    <header class="case-header">
+      <span class="case-tag">BRITISH COLUMBIA · APPLIED GIS</span>
+      <h1 class="case-title">Tweedsmuir Grizzly Density & Road Proximity</h1>
+      <p style="font-size: 1.15rem; color: var(--ash-dark);">
+        Evaluating grizzly population stability across 12 GBPUs against provincial road density thresholds and movement buffer overlaps.
+      </p>
+
+      <div class="header-image-container">
+        <img class="header-lead-image" src="/images/yellowstone-grizzly-bear-road.png" alt="Grizzly bear crossing a two-lane paved highway in front of traffic">
+        <div class="header-image-credit">
+          Photo: National Park Service (NPS), public domain
+        </div>
+      </div>
+    </header>
+
+    <!-- Context and Methods Section -->
+    <article class="case-section">
+      <h2>Context and Background</h2>
+      <p>
+        Vehicle collisions are one of the most documented threats posed to wildlife, being deemed a negative effect of roads. Consequently, this increases the risk of extinction by means of reduction in population size and genetic diversity. From an ecological standpoint, and on a broad scale, roadkill acts as an index of the health of the environment, showing fluctuations in the decline of species and degradation of habitat. For the grizzly bear <em>Ursus arctos horribilis</em>, being a large carnivore with a large home range, and a being a K-selected species, adequate road management is critical to its conservation.
+      </p>
+      <p>
+        The objective of this project was to use spatial analyses to evaluate how legally established protection boundaries intersect with linear infrastructures used by grizzly bears in western British Columbia, in Canada.
+      </p>
+      <p>
+        Vector-based methods were implemented to quantify exact distances between bears and roads, and to map spatial distribution of roads in relation to grizzly bear habitat.
+      </p>
+
+      <h2>Data Used</h2>
+      <p>These are the datasets used for this project:</p>
+      <ul class="dataset-list">
+        <li>
+          <a class="dataset-link" href="https://open.canada.ca/data/en/dataset/1130248f-f1a3-4956-8b2e-38d29d3e4af7" target="_blank" rel="noopener noreferrer">
+            BC Parks, Ecological Reserves, and Protected Areas
+          </a>
+        </li>
+        <li>
+          <a class="dataset-link" href="https://ouvert.canada.ca/data/dataset/2bf91935-9158-4f77-9c2c-4310480e6c29" target="_blank" rel="noopener noreferrer">
+            Grizzly Bear Population Estimates
+          </a>
+        </li>
+        <li>
+          <a class="dataset-link" href="https://catalogue.data.gov.bc.ca/dataset/digital-road-atlas-dra-demographic-partially-attributed-roads" target="_blank" rel="noopener noreferrer">
+            Digital Road Atlas - Demographic Partially-Attributed Roads
+          </a>
+        </li>
+        <li>
+          <a class="dataset-link" href="https://open.canada.ca/data/dataset/dba6c78a-1bc1-4d4f-b75c-96b5b0e7fd30" target="_blank" rel="noopener noreferrer">
+            BC Grizzly Bear Habitat Classification and Rating
+          </a>
+        </li>
+        <li>
+          <a class="dataset-link" href="https://www.inaturalist.org/" target="_blank" rel="noopener noreferrer">
+            iNaturalist Sightings
+          </a>
+        </li>
+      </ul>
+
+      <h2>Aims and Methods</h2>
+      <p>
+        For this project, all coordinates were in NAD 1983 BC Environment Albers, and the objectives are broken down into three chapters.
+      </p>
+
+      <h3>Chapter 1</h3>
+      <p>
+        The main goal of this chapter was to quantify the mean density of grizzly bears per 1,000 km² among the grizzly bear population units intersecting the protected area of Tweedsmuir Provincial Park. According to the Cumulative Effects Framework (2023), any population subunit exceeding a density of 10 bears per 1,000 km² is deemed ecologically stable. Data from the BC Parks, Ecological Reserves, and Protected Areas, and the Grizzly Bear Population Estimates was acquired for this analysis.
+      </p>
+      <p>
+        The BC province wide provincial park polygon layer was filtered using the Definition Query such that only Tweedsmuir Provincial Park was displayed as a completely new polygon layer.
+      </p>
+      <p>
+        The population data was then clipped to Tweedsmuir using the Clip tool such that a new polygon layer with the attribute table displaying the population metrics inside this provincial park was created. Upon opening the attribute table, the Explore Statistics option was selected for the column displaying the bear densities to determine the mean.
+      </p>
+
+      <h3>Chapter 2</h3>
+      <p>
+        This chapter’s aim was to quantify the total density of roads in km per km² of all the GBPUs intersecting Tweedsmuir. According to the road density threshold established by Proctor et al. (2019), bears, particularly females with cubs in areas with road densities below 0.6 km/km² are considered to have a sustainable survival rate. The road line vector data was acquired from the Digital Road Atlas on the British Columbia Data Catalogue. Using the Summarize Within tool, generating a new layer. Subsequently, using the Calculate function upon opening the new layer’s Attribute table, road density for each of the 12 GBPU was calculated as total road length inside the polygons intersecting Tweedsmuir divided by their area. A summary of the resulting densities was soon provided.
+      </p>
+
+      <h3>Chapter 3</h3>
+      <p>
+        This chapter’s aim was to quantify the number of bear observations inside the GBPUs intersecting Tweedsmuir, their distance to a 500 m road buffer, and how many of those observations within these GBPUs overlapped both with foraging habitat whose primary vegetation composition was given suitability scores of 1 and 2 and the 500 m road buffer. This figure of 500 m with elevated risk of collision with vehicles and/or avoidance/aversion to crossing roads. The grizzly bear sightings, specifically chosen between March 25, 2022, and July 1, 2026, were acquired from iNaturalist, all of which were obtained through citizen science.
+      </p>
+      <p>
+        First, the Buffer tool was used, where the Input feature was chosen to be the BC road vector layer, with the threshold set at 500 m. The newly created layer featuring the 500 m buffer layer and the prime foraging habitat layer were incorporated into the Intersect tool, resulting in a layer displaying the overlap between prime grizzly bear foraging habitat and the 500 m buffer. Lastly, using the Select by Location tool, the iNaturalist grizzly bear sightings were isolated such that a layer displaying only those animals foraging in prime habitat within the 500 m buffer was created.
+      </p>
+      <p>
+        The next facet was quantifying the total proportion of prime habitat overlapping with the roads across the 12 GBPUs intersecting Tweedsmuir, and whether the distribution of grizzly bears was more concentrated towards the roads. This was acheived by using the Clip tool to only display the layers of the roads, buffers, prime habitats, and buffer habitat overlaps within the GBPUs intersecting Tweedsmuir. After that, the total area of the overlaps was divided by the total area of the prime habitats, from which, the percentage was found. After the proportion of overlaps within these 12 GBPUs was quantified, the index score of bears within the 500 m buffer was quantified, using the concept of Manley's selection ratio, where a value above 1.0 indicates active selection. The proportion of all buffers within the GBPUs intersecting Tweedsmuir was calculated by dividing their total area by that of the GBPUs intersecting Tweedsmuir.
+      </p>
+    </article>
+
+    <!-- Findings and Spatial Evidence Section -->
+    <article class="case-section">
+      <h2>Findings and Spatial Evidence</h2>
+
+      <h3>Chapter 1</h3>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project1Fig1.png" alt="Figure 1: Grizzly Bear Population Units intersecting Tweedsmuir Provincial Park">
+        <div class="figure-caption">
+          Figure 1: Map Displaying Some of the Several Grizzly Bear Population Units (light purple), with the isolated layer sliced from the original GBPU layer that is restricted to the boundaries of Tweedsmuir Provincial Park. Both layers display population density metrics.
+        </div>
+      </div>
+
+      <p>
+        The unweighted mean estimated grizzly bear population density across the GBPU areas that occurred within Tweedsmuir during the year 2018 was 17.97 individuals per 1,000 km². The lowest density across the GBPUs intersecting Tweedsmuir was 1.99 grizzly bears per 1,000 km². Other densities that fell below the threshold within the GBPU polygons intersecting Tweedsmuir were 4.45, 4.99, and 7.61 grizzly bears per 1,000 km². The highest density across these GBPUs intersecting Tweedsmuir was 47.82 bears per 1000 km².
+      </p>
+
+      <h3>Chapter 2</h3>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project1Fig2.png" alt="Figure 2: Road density across GBPUs intersecting Tweedsmuir Provincial Park">
+        <div class="figure-caption">
+          Figure 2: Map displaying the GBPUs intersecting with Tweedsmuir Provincial Park with the latter’s attribute table summarizing the road density, and roads (blue) around and passing through the park.
+        </div>
+      </div>
+
+      <p>
+        Upon opening the Attribute Table of the road density layer and clicking on the Explore Statistics option for the column displaying the calculated road densities within each polygon, it was found that the mean road density across the 12 GBPUs that intersected Tweedsmuir was 0.0046 km per km². The lowest road density across these GBPUs intersecting Tweedsmuir was 0.00009 km per km², and the highest density across these GBPUs intersecting was 0.0382 km per km².
+      </p>
+
+      <h3>Chapter 3</h3>
+      <div class="figure-container">
+        <img class="figure-image" src="/images/Project1Fig3.png" alt="Figure 3: Grizzly bear sightings across the 500m road buffer and prime habitat">
+        <div class="figure-caption">
+          Figure 3: Map displaying the total number of grizzly bears sighted inside Tweedsmuir, along with roads coated by the 500 m buffer on both sides, and the regions of overlap between prime grizzly bear habitat and the 500 meter buffers (beige).
+        </div>
+      </div>
+
+      <p>
+        There was a total of 13 grizzly bears sighted inside Tweedsmuir, and all individuals were within the 500 m buffer. Individuals were as close as 0.2 m to the road, and as far as 408.4 m from the road.
+      </p>
+      <p>
+        There were 11 recorded observations occurring within the intersection of the road buffer and the prime foraging habitats whose primary vegetation composition was given scores 1 and 2. Thus, the proportion of bears within this buffer was 84.6%.
+      </p>
+      <p>
+        Calculations showed that the road buffer within the GBPUs intersecting Tweedsmuir spans a total of 223.2 km², while the area of Tweedsmuir sums up to 9877.7 km². This means that the buffer occupied approximately 2.3% of Tweedsmuir’s entire area.
+      </p>
+      <p>
+        There was a 9.0% overlap between the prime foraging habitats and the buffer within the GBPUs intersecting Tweedsmuir.
+      </p>
+      <p>
+        Using the figures of the 9.0% overlap and the proportion of bears caught within this buffer, the Manley Selection index yielded a value of 9.4.
+      </p>
+    </article>
+
+    <!-- Discussion and Next Steps Section -->
+    <article class="case-section">
+      <h2>Discussion and Next Steps</h2>
+      <p>
+        Although the GBPUs intersecting Tweedsmuir had a mean density of 17.97 grizzly bears per 1,000 km², which surpasses the threshold established by the Cumulative Effects Framework, four of those units had estimated densities below said threshold of 10 animals per 1,000 km². Despite the mean density not violating the threshold, this figure should not be deemed as the entire Tweedsmuir Park being ecologically stable, as this spatial analysis is based on a population unit level, and not provincial park level analysis.
+      </p>
+      <p>
+        The range of road densities inside Tweedsmuir, which was from 0.000087 to 0.038245 km per km², and the mean density of 0.004603 km per km² were substantially below the reference value 0.6 km per km². However, they are not robust enough to suggest the fact that grizzly bears possess a sustainable survival rate within Tweedsmuir, as traffic and road activity patterns also influence survival rates.
+      </p>
+      <p>
+        All 13 grizzly bear observations were recorded within 500 m of roads, and 11 of them were in areas that were classified as prime foraging habitat, which overlapped with the 500 m buffer established by Proctor et al (2019). However, uncertainty lies in whether their risk of collisions with vehicles was high, whether they foraged actively in ideal habitat, or whether the structure of roads impacted their distribution. Another limitation of this analysis is that the iNaturalist sightings based off citizen science may also display a bias for being skewed towards observations near roads, as opposed to remote backcountry. Another limitation of this study is that the datasets used are from different time periods. The GBPU population estimate data is from 2018, and the iNaturalist sightings chosen for this project are from the years 2022 to 2026. Therefore, this project’s results should be viewed as a spatial evaluation of readily available datasets, as opposed to using specific data occurring within the same time frame.
+      </p>
+      <p>
+        The closure of roads could be implemented in spring, when bears forage in close proximity to roads, including the decommissioning of roads when no longer necessary.
+      </p>
+      <p>
+        Also, it would be of use to monitor movements of collared animals and pair this data with slope and elevation models to evaluate how easily bears are able to cross roads.
+      </p>
+      <p>
+        Since iNaturalist sightings mainly come from motorists passing through the Highway 20, the next step would be deploying camera traps at distances with regular intervals away from roads and into the backcountry. That way, tracking bears as to where they move can happen without solely depending on citizen science data restricted to, and leaning heavily towards road proximity.
+      </p>
+
+      <h3 style="margin-top: 2.5rem; font-size: 1.15rem;">Core References Including Scientific Papers</h3>
+      <ul class="references-list">
+        <li>Boyce, M.S., Pitt, J., Northrup, J.M., Morehouse, A.T., Knopff, K.H., Cristescu, B. and Stenhouse, G.B. (2010). Temporal autocorrelation functions for movement rates from global positioning system radiotelemetry data. <em>Philosophical Transactions of the Royal Society B: Biological Sciences</em>, 365(1550), p.2213.</li>
+        <li>Cumulative Effects Framework (2023). Ministry of Water, Land and Resource Stewardship and Ministry of Environment and Climate Change Strategy. [Online]. Available at: <a href="https://www2.gov.bc.ca/assets/gov/environment/natural-resource-stewardship/cumulative-effects/kootenay-boundary-region/cef-kootenay-grizzly-ccr-2023.pdf" target="_blank" rel="noopener noreferrer">https://www2.gov.bc.ca/assets/gov/environment/natural-resource-stewardship/cumulative-effects/kootenay-boundary-region/cef-kootenay-grizzly-ccr-2023.pdf</a> [Accessed: August 30, 2026].</li>
+        <li>Northrup, J.M., Pitt, J., Muhly, T.B., Stenhouse, G.B., Musiani, M. and Boyce, M.S. (2012) Vehicle traffic shapes grizzly bear behaviour on a multiple‐use landscape. <em>Journal of Applied Ecology</em>, 49(5), pp.1159-1167.</li>
+        <li>Proctor, M.F., McLellan, B.N., Stenhouse, G.B., Mowat, G., Lamb, C.T. and Boyce, M.S. (2019). Effects of roads and motorized human access on grizzly bear populations in British Columbia and Alberta, Canada. <em>Ursus</em>, (30e2), pp.16-39.</li>
+      </ul>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div>
+        <strong>Aditya Korde</strong> · Spatial Conservation & Applied GIS
+      </div>
+      <div>
+        adityakordewildlifemaps.com
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

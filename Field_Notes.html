@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why Trail Cameras are Pointed True North with a Compass | Aditya Korde</title>
+  <meta name="description" content="Eliminating many false thermal triggers on passive infrared sensors before camera trap deployment in the backcountry begins.">
+
+  <!-- Typography: Fraunces, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --field-khaki: #C9BFA0;
+      --card-surface: #F2EEE4;
+      --stripe-black: #14100D;
+      --tiger-orange: #E2591D;
+      --ash: #59544C;
+      --ash-dark: #3A362F;
+      --spruce: #1F3326;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    .note-tag {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--tiger-orange);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+      display: block;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--field-khaki);
+      color: var(--stripe-black);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* Header & Navigation */
+    header {
+      background-color: var(--stripe-black);
+      color: #FFFFFF;
+      padding: 1.25rem 2rem;
+      border-bottom: 2px solid var(--tiger-orange);
+      position: relative;
+      z-index: 100;
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .brand-name:hover {
+      color: var(--tiger-orange);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #F2EEE4;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--tiger-orange);
+    }
+
+    /* Dropdown Component */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-btn {
+      color: #F2EEE4;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.15s ease;
+    }
+
+    .dropdown-btn:hover,
+    .dropdown:hover .dropdown-btn {
+      color: var(--tiger-orange);
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      padding-top: 0.5rem;
+      min-width: 190px;
+      z-index: 1000;
+    }
+
+    .dropdown-inner {
+      background-color: var(--stripe-black);
+      border: 1px solid var(--ash);
+      border-top: 2px solid var(--tiger-orange);
+      border-radius: 4px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      padding: 0.5rem 0;
+    }
+
+    .dropdown-inner a {
+      color: #F2EEE4;
+      padding: 0.65rem 1.25rem;
+      display: block;
+      font-size: 0.88rem;
+      text-decoration: none;
+      font-family: var(--font-mono);
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .dropdown-inner a:hover {
+      background-color: var(--tiger-orange);
+      color: #FFFFFF;
+    }
+
+    /* Open on hover, focus, or click */
+    .dropdown:hover .dropdown-menu,
+    .dropdown.active .dropdown-menu {
+      display: block;
+    }
+
+    /* Main Article Container */
+    .note-container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 4.5rem 2rem 6rem 2rem;
+    }
+
+    .note-card {
+      background-color: var(--card-surface);
+      border: 1px solid var(--ash);
+      border-radius: 4px;
+      padding: 3.5rem 3rem;
+    }
+
+    /* Category Tag */
+    .note-category {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--tiger-orange);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    /* Headline */
+    .note-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.8vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--stripe-black);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Sub-headline */
+    .note-subtitle {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--ash-dark);
+      line-height: 1.5;
+      margin-bottom: 2.25rem;
+    }
+
+    /* Image Display */
+    .note-figure {
+      margin-bottom: 3rem;
+    }
+
+    .note-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+      border: 1px solid var(--ash);
+    }
+
+    /* Attribution */
+    .photo-credit {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--ash);
+      margin-top: 0.65rem;
+      line-height: 1.4;
+    }
+
+    /* Section Headings & Body Copy */
+    .note-section-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--stripe-black);
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .note-card p {
+      font-size: 1rem;
+      color: var(--ash-dark);
+      line-height: 1.7;
+      margin-bottom: 1.35rem;
+    }
+
+    .protocol-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .protocol-item {
+      font-size: 1rem;
+      color: var(--ash-dark);
+      line-height: 1.65;
+      padding-left: 1.25rem;
+      border-left: 2px solid var(--tiger-orange);
+    }
+
+    .protocol-item strong {
+      color: var(--stripe-black);
+      display: inline;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--stripe-black);
+      color: var(--field-khaki);
+      padding: 4rem 2rem 2.5rem 2rem;
+      border-top: 2px solid var(--ash);
+      font-size: 0.92rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-columns {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .footer-brand h4 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: #FFFFFF;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-brand p {
+      color: var(--field-khaki);
+      max-width: 380px;
+      line-height: 1.6;
+    }
+
+    .footer-heading {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--tiger-orange);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .footer-list a {
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-list a:hover {
+      color: var(--tiger-orange);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(89, 84, 76, 0.4);
+      padding-top: 1.75rem;
+      font-size: 0.82rem;
+      color: var(--field-khaki);
+    }
+
+    @media (max-width: 768px) {
+      .note-card {
+        padding: 2.25rem 1.5rem;
+      }
+      .footer-columns {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <nav>
+      <a href="/index.html" class="brand-name">Aditya Korde</a>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/index.html#selected-spatial-work">Projects</a></li>
+        <li><a href="/index.html#about">About</a></li>
+        <li class="dropdown" id="contactDropdownContainer">
+          <button class="dropdown-btn" type="button" aria-expanded="false" onclick="toggleContactDropdown(event)">
+            Contact <span style="font-size: 0.7rem;">▾</span>
+          </button>
+          <div class="dropdown-menu">
+            <div class="dropdown-inner">
+              <a href="mailto:adityako2001@gmail.com">Email</a>
+              <a href="https://linkedin.com/in/aditya-korde-6426aa235/" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://instagram.com/aditya_k2001" target="_blank" rel="noopener">Instagram</a>
+              <a href="/Assets/Adi%20CV%20Sep%202026%20(4)%20(2).pdf" download>Download CV</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Wrap -->
+  <main class="note-container">
+    <article class="note-card">
+
+      <span class="note-tag">FIELDWORK</span>
+      <h1 class="note-title">Why Trail Cameras are Pointed True North with a Compass</h1>
+
+      <p class="note-subtitle">Eliminating many false thermal triggers on passive infrared sensors before camera trap deployment in the backcountry begins.</p>
+
+      <!-- Image Placement with Display Name and Direct Pathway -->
+      <figure class="note-figure">
+        <img src="/images/fox_camera_trap.png" alt="fox_camera_trap" class="note-image">
+        <figcaption class="photo-credit">Photo: Larry Lamsa (Wikimedia Commons, CC-BY-SA 4.0)</figcaption>
+      </figure>
+
+      <!-- Section 1 -->
+      <h2 class="note-section-title">1. The Context</h2>
+      <p>When deploying camera traps in mountain terrain or dense forest edges, the biggest issue affecting crew time and memory card storage is false triggers. In high-density monitoring grids, it is common to pull an SD card after three weeks only to find 4,000 blank images of waving vegetation, changing shadows, and direct sunlight.</p>
+      <p>Sorting through thousands of empty photos burns valuable office hours and drains camera battery banks prematurely. Most false triggers are not caused by animal movement, but rather, by poor deployment position, relative to the solar path.</p>
+
+      <!-- Section 2 -->
+      <h2 class="note-section-title">2. The Mechanics of the Sensor</h2>
+      <p>Trail cameras rely on Passive Infrared (PIR) sensors. These sensors do not detect motion alone; they detect a rapid change in infrared radiation (heat energy) moving across distinct optical zones. Without these sensors, battery life would be compromised and would snap pictures indiscriminately and unnecessarily.</p>
+      <p>When a camera is deployed such that is faces either east or west, the scenario is that of the sensor pointing in the direction of a rising or setting sun. As the sun rises, crossing the horizon, light hits the sensor lens directly or warms ground vegetation, rocks, and tree trunks. If a morning breeze stirs sun-warmed leaves across cooler background shadows, the sensor registers an abrupt thermal difference and fires the shutter.</p>
+      <p>By carrying a standard sighting compass and mounting every unit facing true north, the lens and PIR window remain in consistent, diffused ambient light throughout the entire path the sun takes from dawn to dusk. The harsh late morning, and afternoon rays never hit the lens of the PIR sensor, reducing false thermal triggers to near zero.</p>
+
+      <!-- Section 3 -->
+      <h2 class="note-section-title">3. The Management Takeaway</h2>
+      <p>Establishing a strict orientation protocol saves project budgets and protects data integrity across multi-week deployments:</p>
+
+      <ul class="protocol-list">
+        <li class="protocol-item">
+          <strong>Mandate the Compass Check:</strong> Field technicians should carry a sighting compass and confirm true north orientation before tightening python locks or cable straps.
+        </li>
+        <li class="protocol-item">
+          <strong>Clear the Detection Cone:</strong> Get rid of swaying grass, low branches, and brush within 3 to 5 metres in front of and above the lens to prevent localized heat-shadow triggers on windy afternoons.
+        </li>
+        <li class="protocol-item">
+          <strong>Mount at Knee Height for Medium Carnivores:</strong> In areas targeting bears, wolves, or large felids, attach the camera to the trunk such that it is 50 to 60 cm off the ground. By placing it at knee height, the camera is also set more parallel to the ground, rather than getting a disproportionate view of the ground.
+        </li>
+      </ul>
+
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-columns">
+        <!-- Left: Identity -->
+        <div class="footer-brand">
+          <h4>Aditya Korde</h4>
+          <p>Early-career wildlife conservationist using camera traps and satellite mapping to understand how wild animals live, move and survive.</p>
+        </div>
+
+        <!-- Center: Navigation -->
+        <div>
+          <div class="footer-heading">NAVIGATION</div>
+          <ul class="footer-list">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/index.html#selected-spatial-work">Projects</a></li>
+            <li><a href="/index.html#about">About</a></li>
+            <li><a href="mailto:adityako2001@gmail.com">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Right: Contact -->
+        <div>
+          <div class="footer-heading">CONTACT</div>
+          <ul class="footer-list">
+            <li><a href="mailto:adityako2001@gmail.com">adityako2001@gmail.com</a></li>
+            <li><a href="https://linkedin.com/in/aditya-korde-6426aa235/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://instagram.com/aditya_k2001" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="/Assets/Adi%20CV%20Sep%202026%20(4)%20(2).pdf" download>Download CV (PDF)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-bottom">
+        adityakordewildlifemaps.com
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleContactDropdown(event) {
+      event.stopPropagation();
+      var container = document.getElementById('contactDropdownContainer');
+      container.classList.toggle('active');
+    }
+
+    document.addEventListener('click', function(event) {
+      var container = document.getElementById('contactDropdownContainer');
+      if (container && !container.contains(event.target)) {
+        container.classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>
